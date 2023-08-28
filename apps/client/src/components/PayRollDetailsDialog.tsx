@@ -37,6 +37,13 @@ const handlePrint = () => {
 const PayRollDetailsDialog = (props: PayRollDetailsProps) => {
   const value = useDialog();
 
+  const earnings = props.payRollDetails.paySlipComponents.filter(
+    (component) => Number(component.amount) > 0
+  );
+  const deductions = props.payRollDetails.paySlipComponents.filter(
+    (component) => Number(component.amount) < 0
+  );
+
   return (
     <>
       <Dialog.Trigger {...value} color="primary" className="border-0">
@@ -109,29 +116,19 @@ const PayRollDetailsDialog = (props: PayRollDetailsProps) => {
                 <Typography color="primary" fontWeight="bold">
                   Earning
                 </Typography>
-                <Stack justifyContent="between" orientation="horizontal">
-                  <Typography fontWeight="bold">Basic</Typography>
-                  <Typography>
-                    {new Intl.NumberFormat("en-US", {
-                      style: "currency",
-                      currency: "INR",
-                    }).format(
-                      Number(props.payRollDetails.paySlipComponents[0].amount)
-                    )}
-                  </Typography>
-                </Stack>
-
-                <Stack justifyContent="between" orientation="horizontal">
-                  <Typography fontWeight="bold">HRA</Typography>
-                  <Typography>
-                    {new Intl.NumberFormat("en-US", {
-                      style: "currency",
-                      currency: "INR",
-                    }).format(
-                      Number(props.payRollDetails.paySlipComponents[1].amount)
-                    )}
-                  </Typography>
-                </Stack>
+                {earnings.map((earning) => (
+                  <Stack justifyContent="between" orientation="horizontal">
+                    <Typography fontWeight="bold">
+                      {earning.componentType.name}
+                    </Typography>
+                    <Typography>
+                      {new Intl.NumberFormat("en-US", {
+                        style: "currency",
+                        currency: "INR",
+                      }).format(Number(earning.amount))}
+                    </Typography>
+                  </Stack>
+                ))}
 
                 <Stack justifyContent="between" orientation="horizontal">
                   <Typography fontWeight="bold">Total</Typography>
@@ -142,8 +139,10 @@ const PayRollDetailsDialog = (props: PayRollDetailsProps) => {
                       currency: "INR",
                       signDisplay: "never",
                     }).format(
-                      Number(props.payRollDetails.paySlipComponents[0].amount) +
-                        Number(props.payRollDetails.paySlipComponents[1].amount)
+                      earnings.reduce(
+                        (acc, curr) => acc + Number(curr.amount),
+                        0
+                      )
                     )}
                   </Typography>
                 </Stack>
@@ -159,18 +158,20 @@ const PayRollDetailsDialog = (props: PayRollDetailsProps) => {
                 <Typography color="primary" fontWeight="bold">
                   Deductions
                 </Typography>
-                <Stack justifyContent="between" orientation="horizontal">
-                  <Typography fontWeight="bold">Deductions</Typography>
-                  <Typography>
-                    {new Intl.NumberFormat("en-US", {
-                      style: "currency",
-                      currency: "INR",
-                      signDisplay: "never",
-                    }).format(
-                      Number(props.payRollDetails.paySlipComponents[2].amount)
-                    )}
-                  </Typography>
-                </Stack>
+                {deductions.map((deduction) => (
+                  <Stack justifyContent="between" orientation="horizontal">
+                    <Typography fontWeight="bold">
+                      {deduction.componentType.name}
+                    </Typography>
+                    <Typography>
+                      {new Intl.NumberFormat("en-US", {
+                        style: "currency",
+                        currency: "INR",
+                        signDisplay: "never",
+                      }).format(Number(deduction.amount))}
+                    </Typography>
+                  </Stack>
+                ))}
 
                 <Stack justifyContent="between" orientation="horizontal">
                   <Typography fontWeight="bold">Total</Typography>
@@ -181,7 +182,10 @@ const PayRollDetailsDialog = (props: PayRollDetailsProps) => {
                       currency: "INR",
                       signDisplay: "never",
                     }).format(
-                      Number(props.payRollDetails.paySlipComponents[2].amount)
+                      deductions.reduce(
+                        (acc, curr) => acc + Number(curr.amount),
+                        0
+                      )
                     )}
                   </Typography>
                 </Stack>
@@ -205,9 +209,7 @@ const PayRollDetailsDialog = (props: PayRollDetailsProps) => {
                   }).format(
                     Number(
                       props.payRollDetails.paySlipComponents.reduce(
-                        (acc, curr) => {
-                          return acc + Number(curr.amount);
-                        },
+                        (acc, curr) => acc + Number(curr.amount),
                         0
                       )
                     )
