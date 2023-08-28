@@ -10,10 +10,12 @@ import Tab from "ui/Tab";
 import TextField from "ui/TextField";
 import Tooltip from "ui/Tooltip";
 import { useDrawer } from "ui/hooks/UseDrawer";
+import { useTab } from "ui/hooks/UseTab";
 import { TestDialog } from "./dialog";
 
 const App = () => {
   const props = useDrawer();
+  const { getTabIdProps, onTabClick } = useTab();
 
   return (
     <Tooltip.Provider>
@@ -72,43 +74,49 @@ const App = () => {
       {/* Tab */}
       <Tab id="myTab">
         <Tab.Item>
-          <Tab.Button id="home" className="active">
+          <Tab.Button {...getTabIdProps(0)} onClick={onTabClick(0)}>
             Home
           </Tab.Button>
         </Tab.Item>
         <Tab.Item>
-          <Tab.Button id="profile">Profile</Tab.Button>
+          <Tab.Button {...getTabIdProps(1)} onClick={onTabClick(1)}>
+            Profile
+          </Tab.Button>
         </Tab.Item>
         <Tab.Item>
-          <Tab.Button id="contact">Contact</Tab.Button>
+          <Tab.Button {...getTabIdProps(2)} onClick={onTabClick(2)}>
+            Contact
+          </Tab.Button>
         </Tab.Item>
         <Tab.Item>
-          <Tab.Button id="disabled">Disabled</Tab.Button>
+          <Tab.Button {...getTabIdProps(3)} onClick={onTabClick(3)}>
+            Disabled
+          </Tab.Button>
         </Tab.Item>
       </Tab>
       <Tab.Content id="myTabContent">
-        <Tab.Pane id="home" className="show active">
+        <Tab.Pane {...getTabIdProps(0)}>
           This is some placeholder content the Home tab's associated content.
           Clicking another tab will toggle the visibility of this one for the
           next. The tab JavaScript swaps classes to control the content
           visibility and styling. You can use it with tabs, pills, and any other
           .nav-powered navigation.
         </Tab.Pane>
-        <Tab.Pane id="profile">
+        <Tab.Pane {...getTabIdProps(1)}>
           This is some placeholder content the Home tab's associated content.
           Clicking another tab will toggle the visibility of this one for the
           next. The tab JavaScript swaps classes to control the content
           visibility and styling. You can use it with tabs, pills, and any other
           .nav-powered navigation.
         </Tab.Pane>
-        <Tab.Pane id="contact">
+        <Tab.Pane {...getTabIdProps(2)}>
           This is some placeholder content the Home tab's associated content.
           Clicking another tab will toggle the visibility of this one for the
           next. The tab JavaScript swaps classes to control the content
           visibility and styling. You can use it with tabs, pills, and any other
           .nav-powered navigation.
         </Tab.Pane>
-        <Tab.Pane id="disabled">
+        <Tab.Pane {...getTabIdProps(3)}>
           This is some placeholder content the Home tab's associated content.
           Clicking another tab will toggle the visibility of this one for the
           next. The tab JavaScript swaps classes to control the content

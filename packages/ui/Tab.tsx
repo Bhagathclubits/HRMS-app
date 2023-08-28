@@ -1,5 +1,6 @@
 import React from "react";
 import Box from "./Box";
+import { TabIdProps } from "./hooks/UseTab";
 
 export const baseClasses = "nav nav-tabs";
 
@@ -77,25 +78,33 @@ export const TabItem = (props: TabItemProps) => {
 export const tabLinkBaseClasses = "nav-link";
 
 export const getTabLinkClasses = (props: TabLinkProps) => {
-  return `${tabLinkBaseClasses}  ${props.className}`;
+  return `${tabLinkBaseClasses} ${props.className} ${
+    props.tabId === props.activeTabId ? "active" : ""
+  }`;
 };
 
 export type TabLinkProps = JSX.IntrinsicElements["a"] & {
   children: React.ReactNode;
   id: string;
-};
+} & Partial<TabIdProps>;
 
 export const TabLink = (props: TabLinkProps) => {
   const { id, ...restOfProps } = props;
+
+  const domProps = { ...restOfProps };
+
+  delete domProps.tabId;
+  delete domProps.activeTabId;
 
   return (
     <Box
       as="a"
       className={getTabLinkClasses(props)}
-      {...restOfProps}
-      role="tab"
+      {...domProps}
+      id={`${id}-tab`}
       data-bs-toggle="tab"
-      data-bs-target={`#${id}`}
+      data-bs-target={`#${id}-tab-pane`}
+      role="tab"
     />
   );
 };
@@ -103,7 +112,9 @@ export const TabLink = (props: TabLinkProps) => {
 export const tabButtonBaseClasses = "nav-link";
 
 export const getTabButtonClasses = (props: TabButtonProps) => {
-  const className = `${tabButtonBaseClasses} ${props.className}`;
+  const className = `${tabButtonBaseClasses} ${props.className} ${
+    props.tabId === props.activeTabId ? "active" : ""
+  }`;
 
   return className;
 };
@@ -111,16 +122,21 @@ export const getTabButtonClasses = (props: TabButtonProps) => {
 export type TabButtonProps = JSX.IntrinsicElements["button"] & {
   children: React.ReactNode;
   id: string;
-};
+} & Partial<TabIdProps>;
 
 export const TabButton = (props: TabButtonProps) => {
   const { id, ...restOfProps } = props;
+
+  const domProps = { ...restOfProps };
+
+  delete domProps.tabId;
+  delete domProps.activeTabId;
 
   return (
     <Box
       as="button"
       className={getTabButtonClasses(props)}
-      {...restOfProps}
+      {...domProps}
       id={`${id}-tab`}
       data-bs-toggle="tab"
       data-bs-target={`#${id}-tab-pane`}
@@ -146,21 +162,28 @@ export const TabContent = (props: TabContentProps) => {
 export const tabPaneBaseClasses = "tab-pane fade";
 
 export const getTabPaneClasses = (props: TabPaneProps) => {
-  return `${tabPaneBaseClasses} ${props.className}`;
+  return `${tabPaneBaseClasses} ${props.className} ${
+    props.tabId === props.activeTabId ? "show active" : ""
+  }`;
 };
 
 export type TabPaneProps = JSX.IntrinsicElements["div"] & {
   id: string;
-};
+} & Partial<TabIdProps>;
 
 export const TabPane = (props: TabPaneProps) => {
   const { id, ...restOfProps } = props;
+
+  const domProps = { ...restOfProps };
+
+  delete domProps.tabId;
+  delete domProps.activeTabId;
 
   return (
     <Box
       as="div"
       className={getTabPaneClasses(props)}
-      {...restOfProps}
+      {...domProps}
       id={`${id}-tab-pane`}
       role="tabpanel"
       tabIndex={0}
