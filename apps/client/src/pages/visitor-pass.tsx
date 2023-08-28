@@ -16,6 +16,7 @@ import PageHeader from "../components/PageHeader";
 import PrintButton from "../components/PrintButton";
 import ShowIf from "../components/ShowIf";
 import VisitorPassDialog from "../components/VisitorPassDialog";
+import VisitorPassStatusDialog from "../components/VisitorPassStatusDialog";
 import { useAuthContext } from "../hooks/UseAuth";
 import { client } from "../main";
 import { handleTRPCError } from "../utils/handle-trpc-error";
@@ -112,6 +113,167 @@ const VisitorPasses = () => {
     }
   };
 
+  const columns = [
+    {
+      id: "1",
+      key: "",
+      label: "Visitor Image",
+      renderCell: (item: VisitorPass) => (
+        <Stack alignItems="center">
+          <Avatar
+            src={item.imageUrl as string}
+            variant="circle"
+            className="overflow-hidden"
+          />
+        </Stack>
+      ),
+    },
+    {
+      id: "2",
+      key: "name",
+      label: "Name",
+      renderCell: (item: VisitorPass) => (
+        <Typography transform="capitalize">{item.name}</Typography>
+      ),
+      ...value.sort("name"),
+    },
+    {
+      id: "3",
+      key: "fromPlace",
+      label: "From Place",
+      renderCell: (item: VisitorPass) => (
+        <Typography transform="capitalize">{item.fromPlace}</Typography>
+      ),
+      ...value.sort("fromPlace"),
+    },
+    {
+      id: "4",
+      key: "",
+      label: "Company Name",
+      renderCell: (item: VisitorPass) => (
+        <Typography transform="capitalize">{item.company.name}</Typography>
+      ),
+      ...value.sort("companyId"),
+    },
+    {
+      id: "5",
+      key: "",
+      label: "HR Name",
+      renderCell: (item: VisitorPass) => (
+        <Typography transform="capitalize">{item.hr.user.name}</Typography>
+      ),
+      ...value.sort("hrId"),
+    },
+    {
+      id: "6",
+      key: "mobileNumber",
+      label: "Mobile Number",
+      ...value.sort("mobileNumber"),
+    },
+    {
+      id: "7",
+      key: "",
+      label: "Date",
+      renderCell: (item: VisitorPass) => (
+        <>
+          {item.date
+            ? new Intl.DateTimeFormat("en-US", {
+                year: "numeric",
+                month: "numeric",
+                day: "numeric",
+              }).format(new Date(item.date))
+            : ""}
+        </>
+      ),
+      ...value.sort("date"),
+    },
+
+    {
+      id: "8",
+      key: "",
+      label: "In-time",
+      renderCell: (item: VisitorPass) => (
+        <>
+          {new Intl.DateTimeFormat("en-US", {
+            hour: "numeric",
+            minute: "numeric",
+          }).format(new Date(item.inTime))}
+        </>
+      ),
+      ...value.sort("inTime"),
+    },
+    {
+      id: "9",
+      key: "",
+      label: "Out-time",
+      renderCell: (item: VisitorPass) => (
+        <>
+          {item.outTime !== null
+            ? new Intl.DateTimeFormat("en-US", {
+                hour: "numeric",
+                minute: "numeric",
+              }).format(new Date(item.outTime))
+            : ""}
+        </>
+      ),
+      ...value.sort("outTime"),
+    },
+    {
+      id: "10",
+      key: "reason",
+      label: "Reason",
+      renderCell: (item: VisitorPass) => (
+        <Typography transform="capitalize">{item.reason}</Typography>
+      ),
+      ...value.sort("reason"),
+    },
+    {
+      id: "11",
+      key: "remarks",
+      label: "Remarks",
+      renderCell: (item: VisitorPass) => (
+        <Typography transform="capitalize">{item.remarks}</Typography>
+      ),
+      ...value.sort("remarks"),
+    },
+    {
+      id: "12",
+      key: "status",
+      label: "Status",
+      renderCell: (item: VisitorPass) => (
+        <Typography
+          transform="capitalize"
+          color={
+            item.status.name === "approved"
+              ? "success"
+              : item.status.name === "rejected"
+              ? "danger"
+              : "warning"
+          }
+        >
+          {item.status.name}
+        </Typography>
+      ),
+      ...value.sort("statusId"),
+    },
+    {
+      id: "13",
+      key: "",
+      label: "Action",
+      renderCell: (item: VisitorPass) => (
+        <>
+          <VisitorPassStatusDialog
+            variant={
+              auth.state.user?.role.name === "admin" ? "admin" : "employee"
+            }
+            visitorPassId={item.id}
+            asyncList={value as AsyncListContextValue}
+          />
+        </>
+      ),
+    },
+  ];
+
   return (
     <>
       <Stack gap="3">
@@ -178,127 +340,12 @@ const VisitorPasses = () => {
         <Card id="section-to-print">
           <DataGrid<VisitorPass>
             {...(value as AsyncListContextValue<VisitorPass>)}
-            columns={[
-              {
-                id: "1",
-                key: "",
-                label: "Visitor Image",
-                renderCell: (item) => (
-                  <Stack alignItems="center">
-                    <Avatar
-                      src={item.imageUrl as string}
-                      variant="circle"
-                      className="overflow-hidden"
-                    />
-                  </Stack>
-                ),
-              },
-              {
-                id: "2",
-                key: "name",
-                label: "Name",
-                renderCell: (item) => (
-                  <Typography transform="capitalize">{item.name}</Typography>
-                ),
-                ...value.sort("name"),
-              },
-              {
-                id: "3",
-                key: "fromPlace",
-                label: "From Place",
-                renderCell: (item) => (
-                  <Typography transform="capitalize">
-                    {item.fromPlace}
-                  </Typography>
-                ),
-                ...value.sort("fromPlace"),
-              },
-              {
-                id: "4",
-                key: "",
-                label: "Company Name",
-                renderCell: (item) => (
-                  <Typography transform="capitalize">
-                    {item.company.name}
-                  </Typography>
-                ),
-                ...value.sort("companyId"),
-              },
-              {
-                id: "5",
-                key: "",
-                label: "HR Name",
-                renderCell: (item) => (
-                  <Typography transform="capitalize">
-                    {item.hr.user.name}
-                  </Typography>
-                ),
-                ...value.sort("hrId"),
-              },
-              {
-                id: "6",
-                key: "mobileNumber",
-                label: "Mobile Number",
-                ...value.sort("mobileNumber"),
-              },
-              {
-                id: "7",
-                key: "",
-                label: "Date",
-                renderCell: (item) => (
-                  <>
-                    {item.date
-                      ? new Intl.DateTimeFormat("en-US", {
-                          year: "numeric",
-                          month: "numeric",
-                          day: "numeric",
-                        }).format(new Date(item.date))
-                      : ""}
-                  </>
-                ),
-                ...value.sort("date"),
-              },
+            columns={columns.filter((column) => {
+              if (column.label !== "Action") return true;
+              if (auth.state.user?.role.name === "admin") return true;
 
-              {
-                id: "8",
-                key: "",
-                label: "In-time",
-                renderCell: (item) => (
-                  <>
-                    {new Intl.DateTimeFormat("en-US", {
-                      hour: "numeric",
-                      minute: "numeric",
-                    }).format(new Date(item.inTime))}
-                  </>
-                ),
-                ...value.sort("inTime"),
-              },
-              {
-                id: "9",
-                key: "",
-                label: "Out-time",
-                renderCell: (item) => (
-                  <>
-                    {item.outTime !== null
-                      ? new Intl.DateTimeFormat("en-US", {
-                          hour: "numeric",
-                          minute: "numeric",
-                        }).format(new Date(item.outTime))
-                      : ""}
-                  </>
-                ),
-                ...value.sort("outTime"),
-              },
-              {
-                id: "10",
-                key: "reason",
-                label: "Reason",
-                renderCell: (item) => (
-                  <Typography transform="capitalize">{item.reason}</Typography>
-                ),
-                ...value.sort("reason"),
-              },
-            ]}
+              return false;
+            })}
           />
         </Card>
       </Stack>

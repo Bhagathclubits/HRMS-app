@@ -23,6 +23,7 @@ import { timeSheetRoutes } from "./routes/time-sheets";
 import { timeSheetStatusRoutes } from "./routes/timesheet-status";
 import { userRoutes } from "./routes/users";
 import { visitorPassRoutes } from "./routes/visitor-pass";
+import { visitorPassStatusRoutes } from "./routes/visitor-pass-status";
 import { trpc } from "./trpc";
 
 export const appRouter = trpc.router({
@@ -37,6 +38,7 @@ export const appRouter = trpc.router({
   helpDeskStatus: helpDeskStatusRoutes,
   helpDesk: helpDeskRoutes,
   visitorPass: visitorPassRoutes,
+  visitorPassStatus: visitorPassStatusRoutes,
   user: userRoutes,
   role: roleRoutes,
   leave: leaveRoutes,

@@ -1242,6 +1242,34 @@ const main = async () => {
         )
       );
 
+      const [{ id: defaultVisitorPassStatusId }] = await Promise.all(
+        [
+          {
+            name: "pending",
+            createdById: systemUserId,
+            updatedById: systemUserId,
+          },
+          {
+            name: "approved",
+            createdById: systemUserId,
+            updatedById: systemUserId,
+          },
+          {
+            name: "rejected",
+            createdById: systemUserId,
+            updatedById: systemUserId,
+          },
+        ].map((visitorPassStatus) =>
+          tx.visitorPassStatus.upsert({
+            create: visitorPassStatus,
+            update: visitorPassStatus,
+            where: {
+              name: visitorPassStatus.name,
+            },
+            select: { id: true },
+          })
+        )
+      );
       const [] = await Promise.all(
         [
           {
@@ -1254,6 +1282,7 @@ const main = async () => {
             inTime: new Date(new Date().setHours(9, 0)),
             outTime: new Date(new Date().setHours(9, 0)),
             reason: "sample reason",
+            statusId: defaultVisitorPassStatusId,
             mobileNumber: "987654310",
             createdById: sakthiUserId,
             updatedById: sakthiUserId,
@@ -1268,6 +1297,7 @@ const main = async () => {
             inTime: new Date(new Date().setHours(9, 0)),
             outTime: new Date(new Date().setHours(9, 0)),
             reason: "sample reason",
+            statusId: defaultVisitorPassStatusId,
             mobileNumber: "987654310",
             createdById: sakthiUserId,
             updatedById: sakthiUserId,

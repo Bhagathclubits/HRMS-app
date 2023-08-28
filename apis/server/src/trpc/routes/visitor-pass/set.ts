@@ -23,6 +23,16 @@ export const set = employeeOnlyProcedure
   .input(insertVisitorPassSchema)
   .mutation(async ({ ctx, input }) => {
     try {
+      const { id: pendingStatusId } =
+        await prisma.visitorPassStatus.findFirstOrThrow({
+          select: {
+            id: true,
+          },
+          where: {
+            name: "pending",
+          },
+        });
+
       const visitorPass = await prisma.visitorPass.create({
         data: {
           imageUrl: input.imageUrl,
@@ -34,13 +44,13 @@ export const set = employeeOnlyProcedure
           date: new Date(input.date),
           inTime: new Date(input.inTime),
           outTime: new Date(input.outTime),
+          statusId: pendingStatusId,
           reason: input.reason,
           createdById: ctx.userId,
           updatedById: ctx.userId,
         },
         select: {
           id: true,
-
           name: true,
           fromPlace: true,
           mobileNumber: true,

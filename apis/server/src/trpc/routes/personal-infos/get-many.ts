@@ -77,6 +77,8 @@ export const getMany = protectedProcedure
                   name: true,
                 },
               },
+              email: true,
+              mobile: true,
             },
           },
           imageUrl: true,

@@ -160,11 +160,11 @@ export const ProfilePage = () => {
               </Stack>
               <Stack orientation="horizontal">
                 <Typography color="secondary">Phone number:&nbsp;</Typography>
-                <Typography>6385374777</Typography>
+                <Typography>{location.state.user.mobile}</Typography>
               </Stack>
               <Stack orientation="horizontal">
                 <Typography color="secondary">Email address:&nbsp;</Typography>
-                <Typography>mechmurali53@gmail.com</Typography>
+                <Typography>{location.state.user.email}</Typography>
               </Stack>
               <Stack orientation="horizontal">
                 <Typography color="secondary">Department:&nbsp;</Typography>
@@ -552,7 +552,7 @@ export const ProfilePage = () => {
                                   type="text"
                                   className="form-control"
                                   id="name"
-                                  value={`${addressDetail?.street}, ${addressDetail?.city}, ${addressDetail?.pincode},${addressDetail?.state},`}
+                                  value={addressDetail?.street}
                                   onChange={(event) =>
                                     setCurrentAddress(event.target.value)
                                   }
@@ -566,7 +566,7 @@ export const ProfilePage = () => {
                                   type="text"
                                   className="form-control"
                                   id="name"
-                                  value={`${addressDetail?.street}, ${addressDetail?.city}, ${addressDetail?.pincode},${addressDetail?.state},`}
+                                  value={addressDetail?.street}
                                   onChange={(event) =>
                                     setPermanentAddress(event.target.value)
                                   }

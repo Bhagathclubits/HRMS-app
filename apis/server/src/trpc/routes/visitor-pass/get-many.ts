@@ -10,6 +10,7 @@ const sortBy = (sortBy: string, sortOrder: "asc" | "desc") => {
   const complexSortBysMap: Record<string, unknown> = {
     companyId: { company: { name: sortOrder } },
     hrId: { hr: { user: { name: sortOrder } } },
+    statusId: { status: { name: sortOrder } },
   };
 
   return complexSortBysMap[sortBy] ?? { [sortBy]: sortOrder };
@@ -23,8 +24,10 @@ const sortBys = [
   "fromPlace",
   "mobileNumber",
   "reason",
+  "remarks",
   "hrId",
   "companyId",
+  "statusId",
 ] as const;
 
 const inputParameters = baseGetManyInputParameters.merge(
@@ -66,6 +69,7 @@ export const getMany = protectedProcedure
           inTime: true,
           outTime: true,
           reason: true,
+          remarks: true,
           company: {
             select: {
               id: true,
@@ -81,6 +85,12 @@ export const getMany = protectedProcedure
                 },
               },
               companyId: true,
+            },
+          },
+          status: {
+            select: {
+              id: true,
+              name: true,
             },
           },
         },
