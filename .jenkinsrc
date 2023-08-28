@@ -1,0 +1,85 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('SCM Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/clubitsbhagath/my-node-app.git'
+            }
+        }
+
+        stage('Node.js Build') {
+            steps {
+                container('node') {
+                    script {
+                        sh 'npm install'
+                        sh 'npm install -g yarn'
+                        sh 'yarn install'
+                        sh 'yarn workspace server build:server'
+                        sh 'yarn workspace server start'
+                    }
+                }
+            }
+        }
+
+        stage('Email Approval') {
+            steps {
+                script {
+                    def approvalEmail = emailext (
+                        to: 'bala.d@clubitssolutions.com',
+                        subject: 'Deployment Approval',
+                        body: 'Please approve the deployment by replying to this email.',
+                        replyTo: 'bala.d@clubitssolutions.com'
+                    )
+
+                    timeout(time: 1, unit: 'HOURS') {
+                        waitUntil {
+                            return mail(
+                                filter: 'from:bala.d@clubitssolutions.com',
+                                subject: approvalEmail.subject,
+                                hasText: approvalEmail.body
+                            ).any {
+                                mail -> mail.replyTo.contains('bala.d@clubitssolutions.com')
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Docker Build and Deployment') {
+            steps {
+                container('node') {
+                    script {
+                        sh 'docker build -t my-node-app:0.1.0 .'
+
+                        sh 'docker login -u dockadministrator -p cluBITS$123*'
+                        sh 'docker push dockadministrator/my-node-app:0.1.0'
+
+                        sh 'docker run -d -p 8090:3000 --name nodeapp my-node-app:0.1.0'
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            script {
+                emailext body: 'Your deployment was successful.',
+                         recipientProviders: [[$class: 'CulpritsRecipientProvider']],
+                         subject: 'Deployment Success',
+                         to: 'bala.d@clubitssolutions.com',
+                         attachLog: true
+            }
+        }
+
+        always {
+            script {
+                if (sh(returnStatus: true, script: 'docker ps -a --format "{{.Names}}" | grep -w nodeapp') == 0) {
+                    sh 'docker rm -f nodeapp'
+                }
+            }
+        }
+    }
+}
