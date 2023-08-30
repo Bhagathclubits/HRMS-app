@@ -1,3 +1,5 @@
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { toast } from "react-toastify";
 import { Company } from "server/dist/trpc/routes/company/get-many";
@@ -148,19 +150,18 @@ export const VisitorPass = (props: VisitorPassDialogProps) => {
                   <Grid.Col cols={["12", "lg-1"]}>
                     <label
                       style={{
-                        height: "100px",
-                        width: "100px",
+                        height: 100,
+                        width: 100,
                         display: "flex",
                         justifyContent: "space-evenly",
                         alignItems: "center",
                       }}
                       className="form-control"
-                      htmlFor="customFile"
+                      htmlFor="visitorPassImageFile"
                     >
-                      <input
-                        type="file"
-                        className="form-control"
-                        onChange={onFileChange}
+                      <FontAwesomeIcon
+                        icon={faPlus}
+                        style={{ height: 30, width: 30 }}
                       />
                     </label>
 
@@ -170,7 +171,8 @@ export const VisitorPass = (props: VisitorPassDialogProps) => {
                         display: "none",
                       }}
                       className="form-control"
-                      id="customFile"
+                      id="visitorPassImageFile"
+                      onChange={onFileChange}
                     />
 
                     <Typography as="p" color="danger" wrap="nowrap">

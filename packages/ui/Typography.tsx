@@ -33,8 +33,8 @@ export const colorsClassesMap = {
   "body-secondary": "text-body-secondary",
   "body-tertiary": "text-body-tertiary",
   black: "text-black",
-  white: "text-white",
   "black-50": "text-black-50",
+  white: "text-white",
   "white-50": "text-white-50",
 } as const;
 
@@ -175,6 +175,7 @@ export const Typography = <Key extends TypographyAsKeys>(
   props: TypographyProps<Key>
 ) => {
   const elementProps = { ...props };
+
   delete elementProps.display;
   delete elementProps.color;
   delete elementProps.align;

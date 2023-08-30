@@ -1,3 +1,5 @@
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { toast } from "react-toastify";
 import { Department } from "server/src/trpc/routes/department/get-many";
@@ -140,19 +142,23 @@ export const PersonalInfoDialog = (props: PersonalInfoDialogProps) => {
           <Stack gap="3">
             <Grid.Row gutters="3">
               <Grid.Col cols={["12", "lg-12"]}>
+                <label htmlFor="Photo">
+                  <Typography>Photo</Typography>
+                </label>
                 <label
                   style={{
+                    height: 100,
+                    width: 100,
                     display: "flex",
                     justifyContent: "space-evenly",
                     alignItems: "center",
                   }}
                   className="form-control"
-                  htmlFor="customFile"
+                  htmlFor="personalInfoImageFile"
                 >
-                  <input
-                    type="file"
-                    className="form-control"
-                    onChange={onFileChange}
+                  <FontAwesomeIcon
+                    icon={faPlus}
+                    style={{ height: 30, width: 30 }}
                   />
                 </label>
 
@@ -162,12 +168,14 @@ export const PersonalInfoDialog = (props: PersonalInfoDialogProps) => {
                     display: "none",
                   }}
                   className="form-control"
-                  id="customFile"
+                  id="personalInfoImageFile"
+                  onChange={onFileChange}
                 />
               </Grid.Col>
               <Typography as="p" color="danger" wrap="nowrap">
                 {fileSizeExceedError}
               </Typography>
+
               <Grid.Col cols={["12", "lg-6"]}>
                 <div className="form-floating">
                   <input
