@@ -10,7 +10,7 @@ export const insertHelpDeskStatus = z.object({
   statusId: z.number(),
 });
 
-export type InsertTimeSheet = z.infer<typeof insertHelpDeskStatus>;
+export type InsertHelpDesk = z.infer<typeof insertHelpDeskStatus>;
 
 export const adminUpdate = adminOnlyProcedure
   .input(insertHelpDeskStatus)

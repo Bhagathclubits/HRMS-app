@@ -1,16 +1,16 @@
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { CSSProperties } from "react";
+import Box from "./Box";
+import { textBackgroundsClassesMap } from "./Card";
+import Image from "./Image";
+import Typography from "./Typography";
 import {
   AvatarContext,
   AvatarContextValue,
   useAvatar,
   useAvatarContext,
 } from "./hooks/UseAvatar";
-import Box from "./Box";
-import { textBackgroundsClassesMap } from "./Card";
-import Image from "./Image";
-import Typography from "./Typography";
 
 export const variantsClassesMap = {
   rounded: "rounded",
@@ -34,7 +34,8 @@ export const sizeHeightsMap = {
 
 export const getHeight = (props: AvatarProps): CSSProperties => {
   return {
-    maxHeight: `${sizeHeightsMap[props.size || "base"]}`,
+    maxHeight: `${props.style?.height ?? sizeHeightsMap[props.size ?? "base"]}`,
+    minHeight: `${props.style?.height ?? sizeHeightsMap[props.size ?? "base"]}`,
   };
 };
 
@@ -51,8 +52,10 @@ export const Avatar = (props: AvatarProps) => {
   const value = useAvatar(props);
 
   const domProps = { ...props } as Partial<AvatarProps>;
+
   delete domProps.alt;
   delete domProps.src;
+  delete domProps.variant;
   delete domProps.size;
   delete domProps.textBackground;
 

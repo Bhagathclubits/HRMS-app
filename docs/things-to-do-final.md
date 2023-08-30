@@ -1,64 +1,35 @@
-# Things to do final final
+# Things to do final final final call
 
-- Easy category
-  - [x] Page under maintenance should be work in progress - Murali
-  - [x] Travel, expense and loan should be work in progress - Murali
-  - [x] Add toast for all imports - Vishnupriya
-  - [x] Remove bank details from personal details details page - **Vignesh**
-  - [x] Revoke storage access keys and add it to the environment file - Mithunish & Vignesh
-  - [x] Refactor the responsiveness of payslip modal - **Sakthi&Mithunish**
-  - [x] Add pay slip print - **Vishnupriya**
-  - [x] Add refresh list after import for all tables - **Team**
+- [x] Add multiple identifications in add identification - **Vishnupriya**
+- [ ] Make every modal size uniform - **Team**
+- [x] Add validations for create leave form - **Sakthi**
+- [ ] 3 widgets for employee dashboard page (check alignments and heights for all cards) - **Vignesh**
+- [x] Remove the browse button inside the visitor pass dialog - **Murali**
+- [x] Remove the browse button inside the personal info dialog - **Murali**
 
-- Medium category
-  - [x] Personal details details page - only show information - Vignesh
-  - [x] Dropdowns are not working properly - Vishnupriya & Mithunish
-
-- Hard category
-  - [x] Add export import format for all tables - Team
-    - [x] Address - Murali
-    - [x] Family details - Sakthi
-    - [x] Qualification - Vishnupriya
-    - [x] Leave - Mithunish
-    - [x] Identification - Team
-    - [x] Time sheet - Team
-  - [x] Add import for all tables - Team
-
-- Very Hard category
-  - [x] Print for all tables - Mithunish
-  - [x] Alignment of menu items - Vignesh
-
-- Final priority
-  - [ ] 3 widgets for dashboard page - Vignesh with ChatGPT's help
+- [ ] Update link component in ui library according to the latest bootstrap link documentation - **Mithunish**
+- [ ] Any username and password is redirecting the user into home page
+- [ ] Expense spelling error in expense file
+- [ ] Improve API documentation after changes - **Vishnupriya**
+- [ ] Use date validations for date fields in input parameters for all APIs - **Mithunish**
+- [ ] Refactor schema file according to a common standard - **Mithunish**
+- [ ] Improve the prisma development and production setup - **Mithunish**
 
 ## Things to do final
 
 - [ ] Add passport ocr to personal info screen - **Vignesh**
-- [ ] Leave accept and reject is not working properly - **Sakthi&Vignesh**
-
 - [ ] Improve data grid to handle loading, error and no data states gracefully - **Team**
-- [ ] Add success, warning and error alerts for all tables - **Team**
 - [ ] Search option for every table - **Mithunish**
 - [ ] Use react-hook-form validations for all forms - **Vishnupriya**
 
-- [ ] Refactor schema file according to a common standard - **Mithunish**
 - [ ] Add confirmation modal wherever necessary - **Team**
-- [ ] Use date validations for date fields in input parameters for all APIs - **Mithunish**
 - [ ] Add sms poc integration to this project - **Vignesh**
-- [ ] Improve browser inconsistencies - **Mithunish**
+- [ ] Add otp login
 
 ## Things to figure out
 
-- [ ] Remove relevant get APIs from server - **Team**
 - [ ] Add some logic to generate employee code
-- [ ] Add password recovery
-- [ ] Add otp login
-- [ ] Add dashboard page
-- [ ] Add announcement page
-- [ ] Use newly added components from the ui library
-- [ ] Improve API documentation after changes - **Vishnupriya**
 - [ ] Add react-query library for trpc client and implement loading states - **Mithunish**
-- [ ] Improve the prisma development and production setup - **Mithunish**
 
 ### Things that are done
 
@@ -95,3 +66,25 @@
 - [x] Fix the react key error in the data grid component - **Mithunish**
 - [x] Change the time sheet add modal to check-in and check-out - **Vignesh&Mithunish**
 - [x] Add icon buttons for leave approval and rejection in the leave page - **Vignesh**
+- [x] Leave accept and reject is not working properly - **Sakthi&Vignesh**
+- [x] Add success, warning and error alerts for all tables - **Team**
+- [x] Page under maintenance should be work in progress - **Murali**
+- [x] Travel, expense and loan should be work in progress - **Murali**
+- [x] Add toast for all imports - **Vishnupriya**
+- [x] Remove bank details from personal details details page - **Vignesh**
+- [x] Revoke storage access keys and add it to the environment file - **Mithunish&Vignesh**
+- [x] Refactor the responsiveness of payslip modal - **Sakthi&Mithunish**
+- [x] Add pay slip print - **Vishnupriya**
+- [x] Add refresh list after import for all tables - **Team**
+- [x] Personal details details page - only show information - **Vignesh**
+- [x] Dropdowns are not working properly - **Vishnupriya&Mithunish**
+- [x] Add export import format for all tables - **Team**
+  - [x] Address - **Murali**
+  - [x] Family details - **Sakthi**
+  - [x] Qualification - **Vishnupriya**
+  - [x] Leave - **Mithunish**
+  - [x] Identification - **Team**
+  - [x] Time sheet - **Team**
+- [x] Add import for all tables - **Team**
+- [x] Print for all tables - **Team**
+- [x] Alignment of menu items - **Vignesh**

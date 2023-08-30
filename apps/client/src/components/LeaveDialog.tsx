@@ -91,6 +91,12 @@ export const LeaveDialog = (props: LeaveDialogProps) => {
                     type="date"
                     className="form-control"
                     value={fromDate}
+                    min={new Date().toISOString().split("T")[0]}
+                    max={
+                      new Date(new Date().valueOf() + 45 * 12 * 60 * 60 * 1000)
+                        .toISOString()
+                        .split("T")[0]
+                    }
                     onChange={(
                       event: React.ChangeEvent<HTMLInputElement>
                     ): void => setFromDate(event.target.value)}
@@ -107,6 +113,12 @@ export const LeaveDialog = (props: LeaveDialogProps) => {
                     onChange={(
                       event: React.ChangeEvent<HTMLInputElement>
                     ): void => setToDate(event.target.value)}
+                    min={fromDate}
+                    max={
+                      new Date(new Date().valueOf() + 45 * 12 * 60 * 60 * 1000)
+                        .toISOString()
+                        .split("T")[0]
+                    }
                   />
                   <label htmlFor="TO Date">To Date</label>
                 </div>

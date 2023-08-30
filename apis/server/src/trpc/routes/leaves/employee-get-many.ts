@@ -42,7 +42,7 @@ const inputParameters = baseGetManyInputParameters.merge(
 export type Leave = RouterOutput["leave"]["getMany"]["items"][0];
 export type InputParameters = z.infer<typeof inputParameters>;
 
-export const getMany = protectedProcedure
+export const employeeGetMany = protectedProcedure
   .input(inputParameters.optional())
   .mutation(async ({ ctx, input }) => {
     try {
@@ -55,17 +55,11 @@ export const getMany = protectedProcedure
               },
             }
           : {}),
-        ...(ctx.role === "admin"
-          ? {
-              user: {
-                role: {
-                  name: "employee",
-                },
-              },
-            }
-          : {
-              userId: ctx.userId,
-            }),
+        user: {
+          role: {
+            name: "employee",
+          },
+        },
       };
 
       const leaves = await prisma.leave.findMany({

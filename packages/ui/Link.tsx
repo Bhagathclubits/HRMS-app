@@ -9,6 +9,7 @@ export const colorClassesMap = {
   info: "link-info",
   light: "link-light",
   dark: "link-dark",
+  "body-emphasis": "link-body-emphasis",
 } as const;
 
 export const getClasses = <
