@@ -1,16 +1,16 @@
 # Things to do final final final call
 
-- [x] Add multiple identifications in add identification - **Vishnupriya**
-- [ ] Make every modal size uniform - **Team**
+- [x] Add multiple identifications in add identification - **Vishnupriya&Mithunish**
+- [ ] Make every modal size uniform - **Murali&Sakthi**
 - [x] Add validations for create leave form - **Sakthi**
-- [ ] 3 widgets for employee dashboard page (check alignments and heights for all cards) - **Vignesh**
+- [x] 3 widgets for employee dashboard page (check alignments and heights for all cards) - **Vignesh&Mithunish**
 - [x] Remove the browse button inside the visitor pass dialog - **Murali**
 - [x] Remove the browse button inside the personal info dialog - **Murali**
+- [x] Update link component in ui library according to the latest bootstrap link documentation - **Mithunish**
+- [x] Any username and password is redirecting the user into home page - **Mithunish**
+- [x] Improve API documentation after changes - **Vishnupriya**
 
-- [ ] Update link component in ui library according to the latest bootstrap link documentation - **Mithunish**
-- [ ] Any username and password is redirecting the user into home page
 - [ ] Expense spelling error in expense file
-- [ ] Improve API documentation after changes - **Vishnupriya**
 - [ ] Use date validations for date fields in input parameters for all APIs - **Mithunish**
 - [ ] Refactor schema file according to a common standard - **Mithunish**
 - [ ] Improve the prisma development and production setup - **Mithunish**
@@ -87,4 +87,4 @@
   - [x] Time sheet - **Team**
 - [x] Add import for all tables - **Team**
 - [x] Print for all tables - **Team**
-- [x] Alignment of menu items - **Vignesh**
+- [x] Alignment of menu items - **Murali&Vishnupriya**

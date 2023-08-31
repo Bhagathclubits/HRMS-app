@@ -10,6 +10,7 @@ import { useDialog } from "ui/hooks/UseDialog";
 import { useAuthContext } from "../hooks/UseAuth";
 import { client } from "../main";
 import { handleTRPCError } from "../utils/handle-trpc-error";
+
 export type HelpDeskDialogProps = {
   asyncList: AsyncListContextValue;
 };
@@ -63,59 +64,59 @@ export const HelpDeskDialog = (props: HelpDeskDialogProps) => {
   return (
     <>
       <Dialog.Trigger {...value} variant="primary">
-        Add Hesk Desk
+        Add Help Desk
       </Dialog.Trigger>
       <Dialog {...value}>
-        <Dialog.Header color="primary" title={"HELP DESK"} />
+        <Dialog.Header title={"Help Desk"} />
 
-        <Dialog.Body>
-          <Grid>
-            <Stack gap="5">
-              <Grid.Row gutters="5">
-                <Grid.Col cols={["12", "lg-6"]}>
-                  <label htmlFor="name">title</label>
+        <Dialog.Body style={{ minHeight: "70vh" }}>
+          <Stack gap="5">
+            <Grid.Row gutters="3">
+              <Grid.Col cols={["12", "lg-12"]}>
+                <div className="form-floating">
                   <input
                     type="text"
                     className="form-control"
-                    id="title"
+                    id="name"
                     value={title}
                     onChange={(event) => setTitle(event.target.value)}
                   />
-                </Grid.Col>
+                  <label htmlFor="First Name">Title</label>
+                </div>
+              </Grid.Col>
 
-                <Grid.Col cols={["12", "lg-6"]}>
-                  <label htmlFor="username">Category</label>
-                  <div>
-                    <select
-                      className="form-control"
-                      value={categoryId}
-                      onChange={(e) => setCategoryId(parseInt(e.target.value))}
-                    >
-                      <option value={undefined}>Select Category</option>
-                      {category.map((category) => {
-                        return (
-                          <option value={category.id}>{category.name}</option>
-                        );
-                      })}
-                    </select>
-                  </div>
-                </Grid.Col>
+              <Grid.Col cols={["12", "lg-12"]}>
+                <div className="form-floating">
+                  <select
+                    className="form-control"
+                    value={categoryId}
+                    onChange={(e) => setCategoryId(parseInt(e.target.value))}
+                  >
+                    <option value={undefined}>Select Category</option>
+                    {category.map((category) => {
+                      return (
+                        <option value={category.id}>{category.name}</option>
+                      );
+                    })}
+                  </select>
+                  <label htmlFor="Category">Category</label>
+                </div>
+              </Grid.Col>
 
-                <Grid.Col cols={["12", "xl-12"]}>
-                  <label htmlFor="description">Description</label>
-                  <div className="form-floating">
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="description"
-                      value={description}
-                      onChange={(event) => setDescription(event.target.value)}
-                    />
-                  </div>
-                </Grid.Col>
-              </Grid.Row>
-            </Stack>
-          </Grid>
+              <Grid.Col cols={["12", "lg-12"]}>
+                <div className="form-floating">
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="name"
+                    value={description}
+                    onChange={(event) => setDescription(event.target.value)}
+                  />
+                  <label htmlFor="First Name">Description</label>
+                </div>
+              </Grid.Col>
+            </Grid.Row>
+          </Stack>
         </Dialog.Body>
         <Dialog.Footer>
           <div

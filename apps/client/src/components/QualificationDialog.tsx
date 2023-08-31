@@ -9,6 +9,7 @@ import { useDialog } from "ui/hooks/UseDialog";
 import { useAuthContext } from "../hooks/UseAuth";
 import { client } from "../main";
 import { handleTRPCError } from "../utils/handle-trpc-error";
+
 export type QualificationProps = {
   asyncList: AsyncListContextValue;
 };
@@ -44,23 +45,23 @@ export const QualificationDialog = (props: QualificationProps) => {
       <Dialog {...value}>
         <Dialog.Header color="primary" title={"Qualification"} />
 
-        <Dialog.Body>
-          <Grid>
-            <Stack gap="5">
-              <Grid.Row gutters="5">
-                <Grid.Col cols={["12", "lg-6"]}>
-                  <label htmlFor="name">Qualification</label>
+        <Dialog.Body style={{ minHeight: "70vh" }}>
+          <Stack>
+            <Grid.Row>
+              <Grid.Col cols={["12", "lg-12"]}>
+                <div className="form-floating">
                   <input
                     type="text"
                     className="form-control"
-                    id="qualification"
+                    id="name"
                     value={name}
                     onChange={(event) => setName(event.target.value)}
                   />
-                </Grid.Col>
-              </Grid.Row>
-            </Stack>
-          </Grid>
+                  <label htmlFor="First Name">Qualification</label>
+                </div>
+              </Grid.Col>
+            </Grid.Row>
+          </Stack>
         </Dialog.Body>
         <Dialog.Footer>
           <div

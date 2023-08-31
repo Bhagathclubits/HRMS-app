@@ -43,7 +43,7 @@ export const CreateUserDialog = () => {
       <Dialog {...value}>
         <Dialog.Header title={"Add User"} />
 
-        <Dialog.Body>
+        <Dialog.Body style={{ minHeight: "70vh" }}>
           <Stack gap="3">
             <div>
               <Typography as="h6" color="secondary">

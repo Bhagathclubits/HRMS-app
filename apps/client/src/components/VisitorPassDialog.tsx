@@ -138,55 +138,51 @@ export const VisitorPass = (props: VisitorPassDialogProps) => {
       </Dialog.Trigger>
 
       <Dialog {...value}>
-        <DialogHeader title="VisitorPass" />
-        <Dialog.Body>
+        <DialogHeader title="Visitor Pass" />
+        <Dialog.Body style={{ minHeight: "70vh" }}>
           <Stack gap="3">
             <Grid.Row gutters="3">
               <Grid.Col cols={["12", "xl-12"]}>
                 <label htmlFor="Photo">
-                  <Typography fontWeight="bolder">Photo</Typography>
+                  <Typography>Photo</Typography>
                 </label>
                 <Stack gap="5" orientation="vertical">
-                  <Grid.Col cols={["12", "lg-1"]}>
-                    <label
-                      style={{
-                        height: 100,
-                        width: 100,
-                        display: "flex",
-                        justifyContent: "space-evenly",
-                        alignItems: "center",
-                      }}
-                      className="form-control"
-                      htmlFor="visitorPassImageFile"
-                    >
-                      <FontAwesomeIcon
-                        icon={faPlus}
-                        style={{ height: 30, width: 30 }}
-                      />
-                    </label>
-
-                    <input
-                      type="file"
-                      style={{
-                        display: "none",
-                      }}
-                      className="form-control"
-                      id="visitorPassImageFile"
-                      onChange={onFileChange}
+                  <label
+                    style={{
+                      height: 100,
+                      width: 100,
+                      display: "flex",
+                      justifyContent: "space-evenly",
+                      alignItems: "center",
+                    }}
+                    className="form-control"
+                    htmlFor="visitorPassImageFile"
+                  >
+                    <FontAwesomeIcon
+                      icon={faPlus}
+                      style={{ height: 30, width: 30 }}
                     />
+                  </label>
 
+                  <input
+                    type="file"
+                    style={{
+                      display: "none",
+                    }}
+                    className="form-control"
+                    id="visitorPassImageFile"
+                    onChange={onFileChange}
+                  />
+                  {fileSizeExceedError ? (
                     <Typography as="p" color="danger" wrap="nowrap">
                       {fileSizeExceedError}
                     </Typography>
-                  </Grid.Col>
+                  ) : null}
                 </Stack>
               </Grid.Col>
 
               <Grid.Col cols={["12", "lg-6"]}>
-                <label htmlFor="First Name">
-                  <Typography fontWeight="bolder">Visitor Name</Typography>{" "}
-                </label>
-                <div>
+                <div className="form-floating">
                   <input
                     type="text"
                     className="form-control"
@@ -194,14 +190,12 @@ export const VisitorPass = (props: VisitorPassDialogProps) => {
                     value={name}
                     onChange={(event) => setName(event.target.value)}
                   />
+                  <label htmlFor="Visitor Name">Visitor Name</label>
                 </div>
               </Grid.Col>
 
               <Grid.Col cols={["12", "lg-6"]}>
-                <label htmlFor="Fromplace">
-                  <Typography fontWeight="bolder">From Place</Typography>
-                </label>
-                <div>
+                <div className="form-floating">
                   <input
                     type="text"
                     className="form-control"
@@ -209,14 +203,12 @@ export const VisitorPass = (props: VisitorPassDialogProps) => {
                     value={fromPlace}
                     onChange={(event) => setFromPlace(event.target.value)}
                   />
+                  <label htmlFor="From Place">From Place</label>
                 </div>
               </Grid.Col>
 
               <Grid.Col cols={["12", "lg-6"]}>
-                <label htmlFor="username">
-                  <Typography fontWeight="bolder">Company</Typography>
-                </label>
-                <div>
+                <div className="form-floating">
                   <select
                     className="form-control"
                     value={companyId}
@@ -227,13 +219,11 @@ export const VisitorPass = (props: VisitorPassDialogProps) => {
                       return <option value={company.id}>{company.name}</option>;
                     })}
                   </select>
+                  <label htmlFor="Company">Company</label>
                 </div>
               </Grid.Col>
               <Grid.Col cols={["12", "lg-6"]}>
-                <label htmlFor="username">
-                  <Typography fontWeight="bolder">Hr</Typography>
-                </label>
-                <div>
+                <div className="form-floating">
                   <select
                     className="form-control"
                     value={hrId}
@@ -244,15 +234,12 @@ export const VisitorPass = (props: VisitorPassDialogProps) => {
                       return <option value={hr.id}>{hr.user.name}</option>;
                     })}
                   </select>
+                  <label htmlFor="Hr">Hr</label>
                 </div>
               </Grid.Col>
 
               <Grid.Col cols={["12", "lg-6"]}>
-                <label htmlFor="From date">
-                  {" "}
-                  <Typography fontWeight="bolder">From date</Typography>
-                </label>
-                <div>
+                <div className="form-floating">
                   <input
                     type="date"
                     className="form-control"
@@ -261,15 +248,12 @@ export const VisitorPass = (props: VisitorPassDialogProps) => {
                       event: React.ChangeEvent<HTMLInputElement>
                     ): void => setDate(event.target.value)}
                   />
+                  <label htmlFor="From Date">From Date</label>
                 </div>
               </Grid.Col>
 
               <Grid.Col cols={["12", "lg-6"]}>
-                <label htmlFor="Mobilenumber">
-                  {" "}
-                  <Typography fontWeight="bolder">Mobile Number</Typography>
-                </label>
-                <div>
+                <div className="form-floating">
                   <input
                     type="text"
                     className="form-control"
@@ -277,13 +261,10 @@ export const VisitorPass = (props: VisitorPassDialogProps) => {
                     value={mobileNumber}
                     onChange={(event) => setMobileNumber(event.target.value)}
                   />
+                  <label htmlFor="Mobile Number">Mobile Number</label>
                 </div>
               </Grid.Col>
               <Grid.Col cols={["12", "lg-6"]}>
-                <label htmlFor="InTime">
-                  {" "}
-                  <Typography fontWeight="bolder">In-Time</Typography>
-                </label>
                 <div className="form-floating">
                   <input
                     type="date-time"
@@ -297,9 +278,6 @@ export const VisitorPass = (props: VisitorPassDialogProps) => {
                 </div>
               </Grid.Col>
               <Grid.Col cols={["12", "lg-6"]}>
-                <label htmlFor="OutTime">
-                  <Typography fontWeight="bolder">Out-Time</Typography>
-                </label>
                 <div className="form-floating">
                   <input
                     type="date-time"
@@ -314,12 +292,7 @@ export const VisitorPass = (props: VisitorPassDialogProps) => {
               </Grid.Col>
 
               <Grid.Col cols={["12", "xl-12"]}>
-                <label htmlFor="floatingTextarea2">
-                  {" "}
-                  <Typography fontWeight="bolder">Reason</Typography>
-                </label>
-
-                <div>
+                <div className="form-floating">
                   <textarea
                     className="form-control"
                     id="floatingTextarea2"
@@ -329,6 +302,7 @@ export const VisitorPass = (props: VisitorPassDialogProps) => {
                       setReason(event.target.value)
                     }
                   />
+                  <label htmlFor="Reason">Reason</label>
                 </div>
               </Grid.Col>
             </Grid.Row>

@@ -68,7 +68,7 @@ export const TimesheetDialog = (props: TimesheetDialogProps) => {
 
       <Dialog {...value}>
         <Dialog.Header title="Add Timesheet" />
-        <Dialog.Body>
+        <Dialog.Body style={{ minHeight: "70vh" }}>
           <Stack gap="3">
             <Grid.Row gutters="3">
               <Grid.Col cols={["12", "lg-6"]}>

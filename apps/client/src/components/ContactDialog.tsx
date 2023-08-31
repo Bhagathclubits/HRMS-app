@@ -56,10 +56,10 @@ export const ContactDialog = (props: ContactDialogProps) => {
 
       <Dialog {...value}>
         <Dialog.Header title="Add Address" />
-        <Dialog.Body>
+        <Dialog.Body style={{ minHeight: "70vh" }}>
           <Stack gap="3">
             <Grid.Row gutters="3">
-              <Grid.Col cols={["12", "lg-6"]}>
+              <Grid.Col cols={["12", "lg-12"]}>
                 <div className="form-floating">
                   <select
                     className="form-control"
@@ -74,7 +74,7 @@ export const ContactDialog = (props: ContactDialogProps) => {
                   <label htmlFor="AddressType">Address Type</label>
                 </div>
               </Grid.Col>
-              <Grid.Col cols={["12", "lg-6"]}>
+              <Grid.Col cols={["12", "lg-12"]}>
                 <div className="form-floating">
                   <input
                     type="text"
@@ -86,7 +86,7 @@ export const ContactDialog = (props: ContactDialogProps) => {
                   <label htmlFor="street">Street</label>
                 </div>
               </Grid.Col>
-              <Grid.Col cols={["12", "lg-6"]}>
+              <Grid.Col cols={["12", "lg-12"]}>
                 <div className="form-floating">
                   <input
                     type="text"
@@ -98,7 +98,7 @@ export const ContactDialog = (props: ContactDialogProps) => {
                   <label htmlFor="City">City</label>
                 </div>
               </Grid.Col>
-              <Grid.Col cols={["12", "lg-6"]}>
+              <Grid.Col cols={["12", "lg-12"]}>
                 <div className="form-floating">
                   <input
                     type="text"
@@ -110,7 +110,7 @@ export const ContactDialog = (props: ContactDialogProps) => {
                   <label htmlFor="State">State</label>
                 </div>
               </Grid.Col>
-              <Grid.Col cols={["12", "lg-6"]}>
+              <Grid.Col cols={["12", "lg-12"]}>
                 <div className="form-floating">
                   <input
                     type="text"
@@ -122,7 +122,7 @@ export const ContactDialog = (props: ContactDialogProps) => {
                   <label htmlFor="Country">Country</label>
                 </div>
               </Grid.Col>
-              <Grid.Col cols={["12", "lg-6"]}>
+              <Grid.Col cols={["12", "lg-12"]}>
                 <div className="form-floating">
                   <input
                     type="text"

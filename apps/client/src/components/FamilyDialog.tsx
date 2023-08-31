@@ -69,10 +69,10 @@ export const FamilyDialog = (props: FamilyDialogProps) => {
 
       <Dialog {...value}>
         <Dialog.Header title="Add Family" />
-        <Dialog.Body>
+        <Dialog.Body style={{ minHeight: "70vh" }}>
           <Stack gap="3">
             <Grid.Row gutters="3">
-              <Grid.Col cols={["12", "lg-6"]}>
+              <Grid.Col cols={["12", "lg-12"]}>
                 <div className="form-floating">
                   <input
                     type="text"
@@ -85,7 +85,7 @@ export const FamilyDialog = (props: FamilyDialogProps) => {
                 </div>
               </Grid.Col>
 
-              <Grid.Col cols={["12", "lg-6"]}>
+              <Grid.Col cols={["12", "lg-12"]}>
                 <div className="form-floating">
                   <input
                     type="date"
@@ -99,7 +99,7 @@ export const FamilyDialog = (props: FamilyDialogProps) => {
                 </div>
               </Grid.Col>
 
-              <Grid.Col cols={["12", "lg-6"]}>
+              <Grid.Col cols={["12", "lg-12"]}>
                 <div className="form-floating">
                   <select
                     className="form-control"

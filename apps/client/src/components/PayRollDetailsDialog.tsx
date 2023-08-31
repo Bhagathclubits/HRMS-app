@@ -53,7 +53,10 @@ const PayRollDetailsDialog = (props: PayRollDetailsProps) => {
       <Dialog {...value} modalDialogSize="lg">
         <Dialog.Header title="" className="border-0"></Dialog.Header>
 
-        <Dialog.Body id="section-to-print-payslip">
+        <Dialog.Body
+          id="section-to-print-payslip"
+          style={{ minHeight: "70vh" }}
+        >
           <Grid.Row className="mb-2">
             <Grid.Col cols={["lg-4", "md-6", "12"]}>
               <Stack orientation="horizontal">

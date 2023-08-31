@@ -10,6 +10,7 @@ import { useAuthContext } from "../hooks/UseAuth";
 import GlobalLayout from "../layouts/Global";
 
 const LazyLoginPage = React.lazy(() => import("../pages/login"));
+const LazyHomePage = React.lazy(() => import("../pages/home/home"));
 // TODO: Change the implementation to use the Router and Layout properly
 const LazyAccountPage = React.lazy(() => import("../pages/profile/layout"));
 const LazyEmployeesPage = React.lazy(() => import("../pages/employees"));
@@ -32,6 +33,15 @@ const LazyVisitorPassPage = React.lazy(() => import("../pages/visitor-pass"));
 const LazyLoginPageWithFallback = () => (
   <React.Suspense fallback={"Loading..."}>
     <LazyLoginPage />
+  </React.Suspense>
+);
+const LazyHomePageWithFallback = () => (
+  <React.Suspense fallback={"Loading..."}>
+    <ProtectedRoute>
+      <ShowIf.Employee>
+        <LazyHomePage />
+      </ShowIf.Employee>
+    </ProtectedRoute>
   </React.Suspense>
 );
 const LazyAccountPageWithFallback = () => (
@@ -71,7 +81,6 @@ const LazyUnderMaintenancePageWithFallback = () => (
     </ProtectedRoute>
   </React.Suspense>
 );
-
 const LazyTimeSheetPageWithFallback = () => (
   <React.Suspense fallback={"Loading..."}>
     <ProtectedRoute>
@@ -152,16 +161,33 @@ export const router = createBrowserRouter([
       },
     ],
   },
-
   {
     path: "/*",
     element: <GlobalLayout />,
     children: [
       {
         path: "",
-        element: <Navigate to="account" />,
+        element: (
+          <>
+            <ShowIf.Employee>
+              <Navigate to="home" />
+            </ShowIf.Employee>
+            <ShowIf.Admin>
+              <Navigate to="account" />
+            </ShowIf.Admin>
+          </>
+        ),
       },
-
+      {
+        path: "home/*",
+        element: <Outlet />,
+        children: [
+          {
+            path: "",
+            element: <LazyHomePageWithFallback />,
+          },
+        ],
+      },
       {
         path: "account/*",
         element: <Outlet />,

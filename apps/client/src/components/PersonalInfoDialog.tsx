@@ -138,7 +138,7 @@ export const PersonalInfoDialog = (props: PersonalInfoDialogProps) => {
 
       <Dialog {...value}>
         <Dialog.Header title="Add Personal Info" />
-        <Dialog.Body>
+        <Dialog.Body style={{ minHeight: "70vh" }}>
           <Stack gap="3">
             <Grid.Row gutters="3">
               <Grid.Col cols={["12", "lg-12"]}>
@@ -172,9 +172,11 @@ export const PersonalInfoDialog = (props: PersonalInfoDialogProps) => {
                   onChange={onFileChange}
                 />
               </Grid.Col>
-              <Typography as="p" color="danger" wrap="nowrap">
-                {fileSizeExceedError}
-              </Typography>
+              {fileSizeExceedError ? (
+                <Typography as="p" color="danger" wrap="nowrap">
+                  {fileSizeExceedError}
+                </Typography>
+              ) : null}
 
               <Grid.Col cols={["12", "lg-6"]}>
                 <div className="form-floating">

@@ -69,10 +69,10 @@ export const LeaveDialog = (props: LeaveDialogProps) => {
 
       <Dialog {...value}>
         <Dialog.Header title="Add Leave" />
-        <Dialog.Body>
+        <Dialog.Body style={{ minHeight: "70vh" }}>
           <Stack gap="3">
             <Grid.Row gutters="3">
-              <Grid.Col cols={["12", "lg-6"]}>
+              <Grid.Col cols={["12", "lg-12"]}>
                 <div className="form-floating">
                   <input
                     type="number"
@@ -85,7 +85,7 @@ export const LeaveDialog = (props: LeaveDialogProps) => {
                   <label htmlFor="NoOfDays">No Of Days</label>
                 </div>
               </Grid.Col>
-              <Grid.Col cols={["12", "lg-6"]}>
+              <Grid.Col cols={["12", "lg-12"]}>
                 <div className="form-floating">
                   <input
                     type="date"
@@ -104,7 +104,7 @@ export const LeaveDialog = (props: LeaveDialogProps) => {
                   <label htmlFor="From Date">From Date</label>
                 </div>
               </Grid.Col>
-              <Grid.Col cols={["12", "lg-6"]}>
+              <Grid.Col cols={["12", "lg-12"]}>
                 <div className="form-floating">
                   <input
                     type="date"
@@ -124,7 +124,7 @@ export const LeaveDialog = (props: LeaveDialogProps) => {
                 </div>
               </Grid.Col>
 
-              <Grid.Col cols={["12", "lg-6"]}>
+              <Grid.Col cols={["12", "lg-12"]}>
                 <div className="form-floating">
                   <select
                     className="form-control"

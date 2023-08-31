@@ -21,6 +21,7 @@ import { NavLink, NavLinkProps, useMatch } from "react-router-dom";
 import Link from "ui/Link";
 import Stack from "ui/Stack";
 import Typography from "ui/Typography";
+import ShowIf from "../components/ShowIf";
 import { useAuthContext } from "../hooks/UseAuth";
 import { client, resetToken } from "../main";
 import { handleTRPCError } from "../utils/handle-trpc-error";
@@ -91,12 +92,14 @@ export const SideNavbarLinks = (props: SideNavbarLinksProps) => {
 
   return (
     <Stack>
-      <Link component={NavLink} to="/" style={getActiveStyles}>
-        <Stack gap="2" orientation="horizontal" {...props}>
-          <IconAlignment icon={<FontAwesomeIcon icon={faHome} />} />
-          <Typography as="span">Home</Typography>
-        </Stack>
-      </Link>
+      <ShowIf.Employee>
+        <Link component={NavLink} to="home" style={getActiveStyles}>
+          <Stack gap="2" orientation="horizontal" {...props}>
+            <IconAlignment icon={<FontAwesomeIcon icon={faHome} />} />
+            <Typography as="span">Home</Typography>
+          </Stack>
+        </Link>
+      </ShowIf.Employee>
 
       <Link component={NavLink} to="account" style={getActiveStyles}>
         <Stack gap="2" orientation="horizontal" {...props}>

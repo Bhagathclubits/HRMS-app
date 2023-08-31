@@ -157,123 +157,120 @@ export const IdentificationDialog = (props: IdentificationDialogProps) => {
 
       <Dialog {...value}>
         <DialogHeader title="Identification" />
-        <Dialog.Body>
-          <Stack gap="3">
-            <List>
-              {Array.from(state.identifications).map((identification) => (
-                <List.Item key={identification[0]}>
-                  <Stack orientation="horizontal" gap="1">
-                    <Stack gap="1">
-                      <Typography as="span" color="body-tertiary">
-                        {
-                          identificationTypes.find(
-                            (type) =>
-                              type.id ===
-                              parseInt(identification[1].identificationType)
-                          )?.name
-                        }
-                      </Typography>
+        <Dialog.Body style={{ minHeight: "70vh" }}>
+          <Grid.Row gutters="3">
+            {state.identifications.size > 0 ? (
+              <Grid.Col cols="12">
+                <List>
+                  {Array.from(state.identifications).map((identification) => (
+                    <List.Item key={identification[0]}>
+                      <Stack orientation="horizontal" gap="1">
+                        <Stack gap="1">
+                          <Typography as="span" color="body-tertiary">
+                            {
+                              identificationTypes.find(
+                                (type) =>
+                                  type.id ===
+                                  parseInt(identification[1].identificationType)
+                              )?.name
+                            }
+                          </Typography>
 
-                      <Typography as="span">
-                        {identification[1].identificationNumber}
-                      </Typography>
-                    </Stack>
+                          <Typography as="span">
+                            {identification[1].identificationNumber}
+                          </Typography>
+                        </Stack>
 
-                    <Button
-                      onClick={() =>
-                        dispatch({
-                          type: "REMOVE_IDENTIFICATION",
-                          payload: identification[1].identificationType,
-                        })
-                      }
-                    >
-                      <FontAwesomeIcon icon={faTrash} />
-                    </Button>
-                  </Stack>
-                </List.Item>
-              ))}
-            </List>
-
-            <Grid.Row gutters="3">
-              <Grid.Col cols={["12", "lg-6"]}>
-                <label htmlFor="username">
-                  <Typography fontWeight="bolder">
-                    Identification Type
-                  </Typography>
-                </label>
-                <div>
-                  <select
-                    className="form-control"
-                    value={state.activeIdentification.identificationType}
-                    onChange={(event) =>
-                      dispatch({
-                        type: "CHANGE_ACTIVE_IDENTIFICATION",
-                        payload: {
-                          identificationType: event.target.value,
-                          identificationNumber:
-                            state.activeIdentification.identificationNumber,
-                        },
-                      })
-                    }
-                  >
-                    <option value={undefined}>Select IdentificationType</option>
-                    {identificationTypes.map((identification, index) => {
-                      return (
-                        <option
-                          value={identification.id}
-                          disabled={state.identifications.has(
-                            `${identification.id}`
-                          )}
+                        <Button
+                          onClick={() =>
+                            dispatch({
+                              type: "REMOVE_IDENTIFICATION",
+                              payload: identification[1].identificationType,
+                            })
+                          }
                         >
-                          {identification.name}
-                        </option>
-                      );
-                    })}
-                  </select>
-                </div>
+                          <FontAwesomeIcon icon={faTrash} />
+                        </Button>
+                      </Stack>
+                    </List.Item>
+                  ))}
+                </List>
               </Grid.Col>
+            ) : null}
 
-              <Grid.Col cols={["12", "lg-6"]}>
-                <label htmlFor="First Name">
-                  <Typography fontWeight="bolder">
-                    Identification Number
-                  </Typography>{" "}
-                </label>
-                <div>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="number"
-                    value={state.activeIdentification.identificationNumber}
-                    onChange={(event) =>
-                      dispatch({
-                        type: "CHANGE_ACTIVE_IDENTIFICATION",
-                        payload: {
-                          identificationNumber: event.target.value,
-                          identificationType:
-                            state.activeIdentification.identificationType,
-                        },
-                      })
-                    }
-                  />
-                </div>
-              </Grid.Col>
-            </Grid.Row>
-            <Grid.Row>
-              <Grid.Col>
-                <Button
-                  variant="primary"
-                  onClick={() =>
+            <Grid.Col cols={["12", "lg-12"]}>
+              <div className="form-floating">
+                <select
+                  className="form-control"
+                  value={state.activeIdentification.identificationType}
+                  onChange={(event) =>
                     dispatch({
-                      type: "ADD_IDENTIFICATION",
+                      type: "CHANGE_ACTIVE_IDENTIFICATION",
+                      payload: {
+                        identificationType: event.target.value,
+                        identificationNumber:
+                          state.activeIdentification.identificationNumber,
+                      },
                     })
                   }
                 >
-                  Add
-                </Button>
-              </Grid.Col>
-            </Grid.Row>
-          </Stack>
+                  <option value={undefined}>Select IdentificationType</option>
+                  {identificationTypes.map((identification, index) => {
+                    return (
+                      <option
+                        value={identification.id}
+                        disabled={state.identifications.has(
+                          `${identification.id}`
+                        )}
+                      >
+                        {identification.name}
+                      </option>
+                    );
+                  })}
+                </select>
+                <label htmlFor="Identification Types">
+                  Identification Types
+                </label>
+              </div>
+            </Grid.Col>
+
+            <Grid.Col cols={["12", "lg-12"]}>
+              <div className="form-floating">
+                <input
+                  type="text"
+                  className="form-control"
+                  id="number"
+                  value={state.activeIdentification.identificationNumber}
+                  onChange={(event) =>
+                    dispatch({
+                      type: "CHANGE_ACTIVE_IDENTIFICATION",
+                      payload: {
+                        identificationNumber: event.target.value,
+                        identificationType:
+                          state.activeIdentification.identificationType,
+                      },
+                    })
+                  }
+                />
+                <label htmlFor="Identification Number">
+                  Identification Number
+                </label>
+              </div>
+            </Grid.Col>
+
+            <Grid.Col cols="12">
+              <Button
+                variant="primary"
+                onClick={() =>
+                  dispatch({
+                    type: "ADD_IDENTIFICATION",
+                  })
+                }
+              >
+                Add
+              </Button>
+            </Grid.Col>
+          </Grid.Row>
         </Dialog.Body>
         <Dialog.Footer>
           <div

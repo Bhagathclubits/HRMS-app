@@ -93,32 +93,36 @@ const LeaveStatusDialog = (props: leaveStatusProps) => {
       </Stack>
       <Dialog {...value}>
         <Dialog.Header title="Add Leave Status" />
-        <Dialog.Body>
+        <Dialog.Body style={{ minHeight: "70vh" }}>
           <Stack gap="3">
             <Stack>
-              <label>Remarks</label>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Remarks"
-                value={remarks}
-                onChange={(event) => setRemarks(event.target.value)}
-                required
-              />
+              <div className="form-floating">
+                <select
+                  className="form-control"
+                  value={statusId}
+                  onChange={(event) =>
+                    setStatusId(parseInt(event.target.value))
+                  }
+                >
+                  {status.map((status) => {
+                    return <option value={status.id}>{status.name}</option>;
+                  })}
+                </select>
+                <label htmlFor="status">Status</label>
+              </div>
             </Stack>
-
             <Stack>
-              <label htmlFor="status">Status</label>
-
-              <select
-                className="form-control"
-                value={statusId}
-                onChange={(event) => setStatusId(parseInt(event.target.value))}
-              >
-                {status.map((status) => {
-                  return <option value={status.id}>{status.name}</option>;
-                })}
-              </select>
+              <div className="form-floating">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Remarks"
+                  value={remarks}
+                  onChange={(event) => setRemarks(event.target.value)}
+                  required
+                />
+                <label>Remarks</label>
+              </div>
             </Stack>
           </Stack>
         </Dialog.Body>
