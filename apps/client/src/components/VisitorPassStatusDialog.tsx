@@ -83,7 +83,12 @@ const VisitorPassStatusDialog = (props: VisitorPassStatusProps) => {
                   }
                 >
                   {status.map((status) => {
-                    return <option value={status.id}>{status.name}</option>;
+                    return (
+                      <option value={status.id}>
+                        {status.name.at(0)?.toUpperCase()}
+                        {status.name.slice(1)}
+                      </option>
+                    );
                   })}
                 </select>
                 <label htmlFor="Status">Status</label>
@@ -91,10 +96,10 @@ const VisitorPassStatusDialog = (props: VisitorPassStatusProps) => {
             </Stack>
             <Stack>
               <div className="form-floating">
-                <input
-                  type="text"
+                <textarea
                   className="form-control"
                   placeholder="Remarks"
+                  style={{ height: "100px" }}
                   value={remarks}
                   onChange={(event) => setRemarks(event.target.value)}
                   required

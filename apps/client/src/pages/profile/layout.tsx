@@ -41,20 +41,20 @@ export const Layout = () => {
   return (
     <>
       <Stack gap="3">
-        <ShowIf.Admin>
-          <PageHeader
-            title={<PageHeader.Title></PageHeader.Title>}
-            actions={
-              <Stack orientation="horizontal" gap="3">
+        <PageHeader
+          title={<PageHeader.Title></PageHeader.Title>}
+          actions={
+            <Stack orientation="horizontal" gap="3">
+              <ShowIf.Admin>
                 <CreateUserDialog />
+              </ShowIf.Admin>
 
-                <Button variant="primary" onClick={handlePrint}>
-                  Print
-                </Button>
-              </Stack>
-            }
-          />
-        </ShowIf.Admin>
+              <Button variant="primary" onClick={handlePrint}>
+                Print
+              </Button>
+            </Stack>
+          }
+        />
 
         <Grid.Row>
           <Grid.Col className="py-2" cols={["12", "md-2"]}>

@@ -68,7 +68,7 @@ export const LeaveDialog = (props: LeaveDialogProps) => {
       </Dialog.Trigger>
 
       <Dialog {...value}>
-        <Dialog.Header title="Add Leave" />
+        <Dialog.Header title="Apply Leave" />
         <Dialog.Body style={{ minHeight: "70vh" }}>
           <Stack gap="3">
             <Grid.Row gutters="3">

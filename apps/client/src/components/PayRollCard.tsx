@@ -1,4 +1,4 @@
-import { faPersonWalkingArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { faReceipt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ResponsiveBar } from "@nivo/bar";
 import React from "react";
@@ -16,7 +16,7 @@ export const PayRollCard = () => {
         <Card.Header
           title={
             <Typography color="primary" fontSize="6">
-              <FontAwesomeIcon icon={faPersonWalkingArrowRight} /> Payroll
+              <FontAwesomeIcon icon={faReceipt} /> Payroll
             </Typography>
           }
         />

@@ -14,7 +14,6 @@ import Image from "ui/Image";
 import Stack from "ui/Stack";
 import Typography from "ui/Typography";
 import PageHeader from "../../components/PageHeader";
-import PrintButton from "../../components/PrintButton";
 import { client } from "../../main";
 
 export const ProfilePage = () => {
@@ -138,10 +137,7 @@ export const ProfilePage = () => {
           <FontAwesomeIcon icon={faArrowLeft} /> Back
         </Typography>
       </NavLink>
-      <PageHeader
-        title={<PageHeader.Title></PageHeader.Title>}
-        actions={<PrintButton />}
-      />
+      <PageHeader title={<PageHeader.Title></PageHeader.Title>} />
 
       <Grid.Col cols="12">
         <Stack gap="3">

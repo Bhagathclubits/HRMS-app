@@ -69,7 +69,7 @@ export const LeaveViewPage = ({
     {
       id: "1",
       key: "",
-      label: "Empcode",
+      label: "Emp Code",
       renderCell: (item: Leave) => <>{item.user.id}</>,
     },
     {

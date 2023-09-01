@@ -43,7 +43,7 @@ export const QualificationDialog = (props: QualificationProps) => {
         Add Qualification
       </Dialog.Trigger>
       <Dialog {...value}>
-        <Dialog.Header color="primary" title={"Qualification"} />
+        <Dialog.Header color="primary" title={"Add Qualification"} />
 
         <Dialog.Body style={{ minHeight: "70vh" }}>
           <Stack>

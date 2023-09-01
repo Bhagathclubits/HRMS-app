@@ -290,7 +290,7 @@ export const PersonalInfoPage = ({
             {
               id: "2",
               key: "",
-              label: "Emp name",
+              label: "Emp Name",
               renderCell: (item) => (
                 <>
                   {item.firstName}
@@ -317,14 +317,14 @@ export const PersonalInfoPage = ({
             {
               id: "4",
               key: "firstName",
-              label: "First name",
+              label: "First Name",
               ...value.sort("firstName"),
             },
 
             {
               id: "5",
               key: "lastName",
-              label: "Last name",
+              label: "Last Name",
               ...value.sort("lastName"),
             },
             {

@@ -156,7 +156,7 @@ export const IdentificationDialog = (props: IdentificationDialogProps) => {
       </Dialog.Trigger>
 
       <Dialog {...value}>
-        <DialogHeader title="Identification" />
+        <DialogHeader title="Add Identification" />
         <Dialog.Body style={{ minHeight: "70vh" }}>
           <Grid.Row gutters="3">
             {state.identifications.size > 0 ? (

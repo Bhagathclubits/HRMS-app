@@ -97,7 +97,13 @@ export const TopNavbar = () => {
 };
 
 const Avatar = () => {
-  return <PillButton.Avatar src="/images/users.png" />;
+  const auth = useAuthContext();
+
+  return (
+    <PillButton.Avatar
+      src={auth.state.user?.personalInfo?.imageUrl as string}
+    />
+  );
 };
 
 export default TopNavbar;

@@ -83,7 +83,12 @@ const HelpDeskStatusDialog = (props: HelpDeskStatusProps) => {
                   }
                 >
                   {status.map((status) => {
-                    return <option value={status.id}>{status.name}</option>;
+                    return (
+                      <option value={status.id}>
+                        {status.name.at(0)?.toUpperCase()}
+                        {status.name.slice(1)}
+                      </option>
+                    );
                   })}
                 </select>
                 <label htmlFor="status">Status</label>
@@ -91,8 +96,8 @@ const HelpDeskStatusDialog = (props: HelpDeskStatusProps) => {
             </Stack>
             <Stack>
               <div className="form-floating">
-                <input
-                  type="text"
+                <textarea
+                  style={{ height: "100px" }}
                   className="form-control"
                   placeholder="Remarks"
                   value={remarks}

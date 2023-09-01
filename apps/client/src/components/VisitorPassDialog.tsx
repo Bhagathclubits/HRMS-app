@@ -138,7 +138,7 @@ export const VisitorPass = (props: VisitorPassDialogProps) => {
       </Dialog.Trigger>
 
       <Dialog {...value}>
-        <DialogHeader title="Visitor Pass" />
+        <DialogHeader title="Add Visitor Pass" />
         <Dialog.Body style={{ minHeight: "70vh" }}>
           <Stack gap="3">
             <Grid.Row gutters="3">
@@ -296,7 +296,7 @@ export const VisitorPass = (props: VisitorPassDialogProps) => {
                   <textarea
                     className="form-control"
                     id="floatingTextarea2"
-                    rows={2}
+                    style={{ height: "100px" }}
                     value={reason}
                     onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
                       setReason(event.target.value)

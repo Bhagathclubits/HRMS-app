@@ -111,7 +111,10 @@ export const FamilyDialog = (props: FamilyDialogProps) => {
                     <option value={undefined}>Select a Relation</option>
                     {relationShip.map((relation) => {
                       return (
-                        <option value={relation.id}>{relation.name} </option>
+                        <option value={relation.id}>
+                          {relation.name.at(0)?.toUpperCase()}
+                          {relation.name.slice(1)}
+                        </option>
                       );
                     })}
                   </select>

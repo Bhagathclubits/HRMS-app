@@ -4,6 +4,21 @@ import { FastifyRequest } from "fastify";
 import fp from "fastify-plugin";
 import env from "../environment/variables";
 
+export type Payload = {
+  role: {
+    name: string;
+  };
+  id: number;
+  name: string;
+  username: string;
+  mobile: string | null;
+  email: string | null;
+  password: string;
+  personalInfo: {
+    imageUrl: string | null;
+  } | null;
+};
+
 export type User = {
   id: number;
   name: string;
@@ -12,9 +27,8 @@ export type User = {
   username: string;
   mobile: string | null;
   email: string | null;
+  imageUrl?: string | null;
 };
-
-export type Payload = Omit<User, "role"> & { role: { name: string } };
 
 declare module "@fastify/jwt" {
   interface FastifyJWT {
@@ -36,10 +50,17 @@ export default fp<FastifyJWTOptions>(async (fastify, opts) => {
     sign: {
       expiresIn: "10m",
     },
-    formatUser: (payload) => ({
-      ...payload,
-      role: payload.role.name,
-    }),
+    formatUser: (payload) => {
+      return {
+        id: payload.id,
+        name: payload.name,
+        role: payload.role.name,
+        username: payload.username,
+        email: payload.email,
+        mobile: payload.mobile,
+        imageUrl: payload.personalInfo?.imageUrl,
+      };
+    },
   });
 
   fastify.decorateRequest("authenticate", async (req: FastifyRequest) => {

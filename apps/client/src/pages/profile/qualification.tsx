@@ -221,7 +221,7 @@ const Qualifications = ({ tabId, activeTabId }: QualificationPageProps) => {
             {
               id: "1",
               key: "",
-              label: "Emp code",
+              label: "Emp Code",
               renderCell: (item) => <>{item.user.id}</>,
             },
             {

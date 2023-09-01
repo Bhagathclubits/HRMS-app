@@ -3,7 +3,10 @@ import bcrypt from "bcrypt";
 import { z } from "zod";
 import { prisma } from "../../../db/prisma";
 import env from "../../../environment/variables";
+import { RouterOutput } from "../../router";
 import { publicProcedure } from "../../trpc";
+
+export type User = RouterOutput["user"]["signIn"]["user"];
 
 export const signIn = publicProcedure
   .input(
@@ -23,6 +26,11 @@ export const signIn = publicProcedure
           role: {
             select: {
               name: true,
+            },
+          },
+          personalInfo: {
+            select: {
+              imageUrl: true,
             },
           },
           email: true,

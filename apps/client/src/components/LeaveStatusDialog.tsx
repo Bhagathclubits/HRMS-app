@@ -105,7 +105,12 @@ const LeaveStatusDialog = (props: leaveStatusProps) => {
                   }
                 >
                   {status.map((status) => {
-                    return <option value={status.id}>{status.name}</option>;
+                    return (
+                      <option value={status.id}>
+                        {status.name.at(0)?.toUpperCase()}
+                        {status.name.slice(1)}
+                      </option>
+                    );
                   })}
                 </select>
                 <label htmlFor="status">Status</label>

@@ -1,14 +1,12 @@
-# Things to do final final final call
+# Things to do final final final final call
 
-- [x] Add multiple identifications in add identification - **Vishnupriya&Mithunish**
-- [ ] Make every modal size uniform - **Murali&Sakthi**
-- [x] Add validations for create leave form - **Sakthi**
-- [x] 3 widgets for employee dashboard page (check alignments and heights for all cards) - **Vignesh&Mithunish**
-- [x] Remove the browse button inside the visitor pass dialog - **Murali**
-- [x] Remove the browse button inside the personal info dialog - **Murali**
-- [x] Update link component in ui library according to the latest bootstrap link documentation - **Mithunish**
-- [x] Any username and password is redirecting the user into home page - **Mithunish**
-- [x] Improve API documentation after changes - **Vishnupriya**
+- [ ] Staging table to production table cron job
+- [ ] File location to production table import cron job
+- [ ] Dashboard drag and drop edit and report generation tool
+- [ ] Admin announcements
+- [ ] Deployment setup review and report
+
+## Things to do final final final call
 
 - [ ] Expense spelling error in expense file
 - [ ] Use date validations for date fields in input parameters for all APIs - **Mithunish**
@@ -88,3 +86,12 @@
 - [x] Add import for all tables - **Team**
 - [x] Print for all tables - **Team**
 - [x] Alignment of menu items - **Murali&Vishnupriya**
+- [x] Add multiple identifications in add identification - **Vishnupriya&Mithunish**
+- [x] Make every modal size uniform - **Murali&Sakthi**
+- [x] Add validations for create leave form - **Sakthi**
+- [x] 3 widgets for employee dashboard page (check alignments and heights for all cards) - **Vignesh&Mithunish**
+- [x] Remove the browse button inside the visitor pass dialog - **Murali**
+- [x] Remove the browse button inside the personal info dialog - **Murali**
+- [x] Update link component in ui library according to the latest bootstrap link documentation - **Mithunish**
+- [x] Any username and password is redirecting the user into home page - **Mithunish**
+- [x] Improve API documentation after changes - **Vishnupriya**

@@ -67,7 +67,7 @@ export const HelpDeskDialog = (props: HelpDeskDialogProps) => {
         Add Help Desk
       </Dialog.Trigger>
       <Dialog {...value}>
-        <Dialog.Header title={"Help Desk"} />
+        <Dialog.Header title={"Add Help Desk"} />
 
         <Dialog.Body style={{ minHeight: "70vh" }}>
           <Stack gap="5">
@@ -95,7 +95,10 @@ export const HelpDeskDialog = (props: HelpDeskDialogProps) => {
                     <option value={undefined}>Select Category</option>
                     {category.map((category) => {
                       return (
-                        <option value={category.id}>{category.name}</option>
+                        <option value={category.id}>
+                          {category.name.at(0)?.toUpperCase()}
+                          {category.name.slice(1)}
+                        </option>
                       );
                     })}
                   </select>
@@ -105,10 +108,10 @@ export const HelpDeskDialog = (props: HelpDeskDialogProps) => {
 
               <Grid.Col cols={["12", "lg-12"]}>
                 <div className="form-floating">
-                  <input
-                    type="text"
+                  <textarea
                     className="form-control"
                     id="name"
+                    style={{ height: "100px" }}
                     value={description}
                     onChange={(event) => setDescription(event.target.value)}
                   />

@@ -81,7 +81,7 @@ export const HelpDeskPage = () => {
     {
       id: "1",
       key: "",
-      label: "Empcode",
+      label: "Emp Code",
       renderCell: (item: HelpDesk) => <>{item.user.id}</>,
     },
     {
@@ -115,7 +115,7 @@ export const HelpDeskPage = () => {
     {
       id: "3",
       key: "title",
-      label: "title",
+      label: "Title",
       renderCell: (item: HelpDesk) => <>{item.title}</>,
       ...value.sort("title"),
     },
