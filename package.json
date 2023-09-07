@@ -14,6 +14,7 @@
     "turbo": "latest"
   },
   "name": "clubits",
+  "description": "monorepo for clubits",
   "packageManager": "yarn@1.22.19",
   "workspaces": [
     "apis/*",
