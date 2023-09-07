@@ -2,60 +2,105 @@ pipeline {
     agent any
 
     stages {
-        stage('SCM Checkout') {
+        stage('SCM Checkout - Your Repository') {
             steps {
-                git branch: 'main', url: 'https://github.com/clubitsbhagath/my-node-app.git'
-            }
-        }
-
-        stage('Node.js Build') {
-            steps {
-                container('node') {
-                    script {
-                        sh 'npm install -g yarn'
-                        sh 'yarn install'
-                        sh 'yarn workspace server build:server'
-                        sh 'yarn workspace server start'
-                    }
+                catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+                    checkout([$class: 'GitSCM',
+                        branches: [[name: 'main']],
+                        userRemoteConfigs: [[
+                            url: 'https://github.com/Bhagathclubits/HRMS-deployment.git',
+                            credentialsId: 'gitzz'
+                        ]]
+                    ])
                 }
             }
         }
 
-        stage('Email Approval') {
+        stage('SCM Checkout - Developer Repository') {
+            when {
+                expression { currentBuild.buildVariables.GIT_URL == 'https://github.com/clubits-solutions/clubits.git' }
+            }
+            steps {
+                catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+                    checkout([$class: 'GitSCM',
+                        branches: [[name: 'main']],
+                        userRemoteConfigs: [[
+                            url: 'https://github.com/clubits-solutions/clubits.git',
+                            credentialsId: 'developer-git-credentials'
+                        ]]
+                    ])
+                }
+            }
+        }
+
+        stage('Build the Docker image') {
             steps {
                 script {
-                    def approvalEmail = emailext (
-                        to: 'bala.d@clubitssolutions.com',
-                        subject: 'Deployment Approval',
-                        body: 'Please approve the deployment by replying to this email.',
-                        replyTo: 'bala.d@clubitssolutions.com'
-                    )
+                    sh 'docker build -t my-node /var/lib/jenkins/workspace/HRMS-pipeline'
+                    sh 'docker tag my-node node/hrms-pipeline:latest'
+                    sh "docker tag my-node node/hrms-pipeline:${BUILD_NUMBER}" // Use the build number here
 
-                    timeout(time: 1, unit: 'HOURS') {
-                        waitUntil {
-                            return mail(
-                                filter: 'from:bala.d@clubitssolutions.com',
-                                subject: approvalEmail.subject,
-                                hasText: approvalEmail.body
-                            ).any {
-                                mail -> mail.replyTo.contains('bala.d@clubitssolutions.com')
-                            }
-                        }
+                    // Store the current Docker image name for rollback
+                    env.CURRENT_IMAGE_NAME = "node/hrms-pipeline:${BUILD_NUMBER}"
+                }
+            }
+        }
+
+        stage('Deploy - Your Repository') {
+            when {
+                expression { currentBuild.buildVariables.GIT_URL == 'https://github.com/Bhagathclubits/HRMS-deployment.git' }
+            }
+            steps {
+                script {
+                    try {
+                        // Deploy the new version for your repository here
+                        // Add commands or scripts for deploying the Docker image to your EC2 instance
+
+                        // Perform testing and validation on the new version
+                        // Add testing and validation steps here
+
+                        // If testing and validation succeed, update the current version
+                        sh "echo ${BUILD_NUMBER} > current_version.txt"
+                    } catch (Exception e) {
+                        echo "Deployment or testing/validation failed for your repository. Initiating rollback..."
+                        currentBuild.result = 'FAILURE' // Mark the build as FAILURE
+
+                        // Implement rollback logic for your repository here
+                        sh "docker stop my-node" // Stop the current container
+                        sh "docker rm my-node"   // Remove the current container
+                        sh "docker run -d --name my-node ${env.CURRENT_IMAGE_NAME}" // Start the previous container
+
+                        error("Rollback completed. Deployment failed for your repository.")
                     }
                 }
             }
         }
 
-        stage('Docker Build and Deployment') {
+        stage('Deploy - Developer Repository') {
+            when {
+                expression { currentBuild.buildVariables.GIT_URL == 'https://github.com/clubits-solutions/clubits.git' }
+            }
             steps {
-                container('node') {
-                    script {
-                        sh 'docker build -t my-node-app:0.1.0 .'
+                script {
+                    try {
+                        // Deploy the new version for the developer's repository here
+                        // Add commands or scripts for deploying the Docker image to your EC2 instance
 
-                        sh 'docker login -u dockadministrator -p cluBITS$123*'
-                        sh 'docker push dockadministrator/my-node-app:0.1.0'
+                        // Perform testing and validation on the new version
+                        // Add testing and validation steps here
 
-                        sh 'docker run -d -p 8090:3000 --name nodeapp my-node-app:0.1.0'
+                        // If testing and validation succeed, update the current version
+                        sh "echo ${BUILD_NUMBER} > current_version.txt"
+                    } catch (Exception e) {
+                        echo "Deployment or testing/validation failed for the developer's repository. Initiating rollback..."
+                        currentBuild.result = 'FAILURE' // Mark the build as FAILURE
+
+                        // Implement rollback logic for the developer's repository here
+                        sh "docker stop my-node" // Stop the current container
+                        sh "docker rm my-node"   // Remove the current container
+                        sh "docker run -d --name my-node ${env.CURRENT_IMAGE_NAME}" // Start the previous container
+
+                        error("Rollback completed. Deployment failed for the developer's repository.")
                     }
                 }
             }
@@ -64,21 +109,14 @@ pipeline {
 
     post {
         success {
-            script {
-                emailext body: 'Your deployment was successful.',
-                         recipientProviders: [[$class: 'CulpritsRecipientProvider']],
-                         subject: 'Deployment Success',
-                         to: 'bala.d@clubitssolutions.com',
-                         attachLog: true
-            }
+            mail body: 'Dear Balaji your deployment was successful.',
+                 subject: 'Deployment Success',
+                 to: 'bhagath.sr@gmail.com'
         }
-
-        always {
-            script {
-                if (sh(returnStatus: true, script: 'docker ps -a --format "{{.Names}}" | grep -w nodeapp') == 0) {
-                    sh 'docker rm -f nodeapp'
-                }
-            }
+        failure {
+            mail body: 'Your deployment has failed.',
+                 subject: 'Dear Balaji your Deployment has Failed',
+                 to: 'bhagath.sr@gmail.com'
         }
     }
 }
