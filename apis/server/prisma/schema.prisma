@@ -75,6 +75,58 @@ model Designation {
   @@map("designations")
 }
 
+model ExpenseType {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique @db.VarChar(64)
+  createdAt   DateTime  @default(now()) @map("created_at")
+  createdById Int       @map("created_by_id")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  updatedById Int       @map("updated_by_id")
+  createdBy   User      @relation("ExpenseTypeCreatedByUser", fields: [createdById], references: [id], onUpdate: NoAction)
+  updatedBy   User      @relation("ExpenseTypeUpdatedByUser", fields: [updatedById], references: [id], onUpdate: NoAction)
+  expenses    Expense[] @relation("ExpenseOfExpenseType")
+
+  @@map("expense_types")
+}
+
+model ExpenseStatus {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique @db.VarChar(64)
+  createdAt   DateTime  @default(now()) @map("created_at")
+  createdById Int       @map("created_by_id")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  updatedById Int       @map("updated_by_id")
+  createdBy   User      @relation("ExpenseStatusCreatedByUser", fields: [createdById], references: [id], onUpdate: NoAction)
+  updatedBy   User      @relation("ExpenseStatusUpdatedByUser", fields: [updatedById], references: [id], onUpdate: NoAction)
+  expenses    Expense[] @relation("ExpenseOfExpenseStatus")
+
+  @@map("expense_status")
+}
+
+model Expense {
+  id       Int           @id @default(autoincrement())
+  amount   Decimal       @db.Decimal
+  userId   Int           @map("user_id")
+  date     DateTime      @map("date")
+  remarks  String?
+  type     ExpenseType   @relation("ExpenseOfExpenseType", fields: [typeId], references: [id], onUpdate: NoAction, onDelete: NoAction)
+  typeId   Int           @map("type_id")
+  status   ExpenseStatus @relation("ExpenseOfExpenseStatus", fields: [statusId], references: [id], onUpdate: NoAction)
+  statusId Int           @map("status_id")
+
+  //Audit Files
+  createdAt   DateTime @default(now()) @map("created_at") @db.DateTime2
+  createdById Int      @map("created_by_id")
+  createdBy   User     @relation("ExpenseCreatedByUser", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user        User     @relation("ExpenseOfUser", fields: [userId], references: [id], onUpdate: NoAction)
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.DateTime2
+  updatedById Int      @map("updated_by_id")
+  updatedBy   User     @relation("ExpenseUpdatedByUser", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([userId, typeId, date])
+  @@map("expense")
+}
+
 model RelationshipType {
   id            Int            @id @default(autoincrement())
   name          String         @unique @db.VarChar(64)
@@ -158,6 +210,41 @@ model Leave {
 
   @@unique([userId, leaveTypeId, fromDate, toDate, noOfDays])
   @@map("leaves")
+}
+
+model TravelStatus {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique @db.VarChar(64)
+  createdAt   DateTime @default(now()) @map("created_at")
+  createdById Int      @map("created_by_id")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  updatedById Int      @map("updated_by_id")
+  createdBy   User     @relation("TravelStatusCreatedByUser", fields: [createdById], references: [id], onUpdate: NoAction)
+  updatedBy   User     @relation("TravelStatusUpdatedByUser", fields: [updatedById], references: [id], onUpdate: NoAction)
+  travels     Travel[] @relation("TravelOfTravelStatus")
+
+  @@map("travel_status")
+}
+
+model Travel {
+  id          Int          @id @default(autoincrement())
+  userId      Int          @map("user_id")
+  place       String       @map("place") @db.VarChar(64)
+  fromDate    DateTime     @map("from_date")
+  toDate      DateTime     @map("to_date")
+  remarks     String?      @map("remarks") @db.VarChar(1024)
+  statusId    Int          @map("status_id")
+  createdAt   DateTime     @default(now()) @map("created_at")
+  createdById Int          @map("created_by_id")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
+  updatedById Int          @map("updated_by_id")
+  createdBy   User         @relation("TravelCreatedByUser", fields: [createdById], references: [id], onUpdate: NoAction)
+  status      TravelStatus @relation("TravelOfTravelStatus", fields: [statusId], references: [id], onUpdate: NoAction)
+  updatedBy   User         @relation("TravelUpdatedByUser", fields: [updatedById], references: [id], onUpdate: NoAction)
+  user        User         @relation("TravelOfUser", fields: [userId], references: [id], onUpdate: NoAction)
+
+  @@unique([userId, fromDate, toDate])
+  @@map("travel")
 }
 
 model PayRollStatus {
@@ -576,13 +663,21 @@ model User {
   status   UserStatus? @relation("UserOfUserStatus", fields: [statusId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   statusId Int?        @map("status_id")
 
-  addresses                    Address[]                @relation("AddressOfUser")
-  addressesCreated             Address[]                @relation("AddressCreatedByUser")
-  addressesUpdated             Address[]                @relation("AddressUpdatedByUser")
-  departmentsCreated           Department[]             @relation("DepartmentCreatedByUser")
-  departmentsUpdated           Department[]             @relation("DepartmentUpdatedByUser")
-  designationsCreated          Designation[]            @relation("DesignationCreatedByUser")
-  designationsUpdated          Designation[]            @relation("DesignationUpdatedByUser")
+  addresses           Address[]     @relation("AddressOfUser")
+  addressesCreated    Address[]     @relation("AddressCreatedByUser")
+  addressesUpdated    Address[]     @relation("AddressUpdatedByUser")
+  departmentsCreated  Department[]  @relation("DepartmentCreatedByUser")
+  departmentsUpdated  Department[]  @relation("DepartmentUpdatedByUser")
+  designationsCreated Designation[] @relation("DesignationCreatedByUser")
+  designationsUpdated Designation[] @relation("DesignationUpdatedByUser")
+  expenses            Expense[]     @relation("ExpenseOfUser")
+  expensesCreated     Expense[]     @relation("ExpenseCreatedByUser")
+  expensesUpdated     Expense[]     @relation("ExpenseUpdatedByUser")
+
+  travels        Travel[] @relation("TravelOfUser")
+  travelsCreated Travel[] @relation("TravelCreatedByUser")
+  travelsUpdated Travel[] @relation("TravelUpdatedByUser")
+
   familyDetails                FamilyDetail[]           @relation("FamilyDetailOfUser")
   familyDetailsCreated         FamilyDetail[]           @relation("FamilyDetailCreatedByUser")
   familyDetailsUpdated         FamilyDetail[]           @relation("FamilyDetailUpdatedByUser")
@@ -668,6 +763,13 @@ model User {
   visitorUpdated             VisitorPass[]       @relation("VisitorUpdatedByUser")
   visitorPassStatusesCreated VisitorPassStatus[] @relation("VisitorPassStatusCreatedByUser")
   visitorPassStatusesUpdated VisitorPassStatus[] @relation("VisitorPassStatusUpdatedByUser")
+  travelStatusesCreated      TravelStatus[]      @relation("TravelStatusCreatedByUser")
+  travelStatusesUpdated      TravelStatus[]      @relation("TravelStatusUpdatedByUser")
+
+  expenseStatusesCreated ExpenseStatus[] @relation("ExpenseStatusCreatedByUser")
+  expenseStatusesUpdated ExpenseStatus[] @relation("ExpenseStatusUpdatedByUser")
+  expenseTypesCreated    ExpenseType[]   @relation("ExpenseTypeCreatedByUser")
+  ExpenseTypesUpdated    ExpenseType[]   @relation("ExpenseTypeUpdatedByUser")
 
   @@unique([username, mobile])
   @@unique([username, email])

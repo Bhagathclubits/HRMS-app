@@ -1,4 +1,5 @@
 import { BlobServiceClient } from "@azure/storage-blob";
+import { getUrlWithoutSearchParams } from "./get-url-without-search-params";
 
 const containerName = `upload`;
 
@@ -20,5 +21,5 @@ export const uploadFileToBlob = async (file: File, sasToken: string) => {
   // upload file
   await blobClient.uploadData(file, options);
 
-  return blobClient.url;
+  return getUrlWithoutSearchParams(blobClient.url);
 };

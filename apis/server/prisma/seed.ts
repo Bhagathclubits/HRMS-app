@@ -22,6 +22,8 @@ const main = async () => {
       await tx.payRoll.deleteMany();
       await tx.visitorPass.deleteMany();
       await tx.helpDesk.deleteMany();
+      await tx.expense.deleteMany();
+      await tx.travel.deleteMany();
 
       const { id: systemRoleId } = await tx.role.upsert({
         create: {
@@ -1636,6 +1638,231 @@ const main = async () => {
         ].map((leave) =>
           tx.leave.create({
             data: leave,
+            select: {
+              id: true,
+            },
+          })
+        )
+      );
+
+      const [
+        { id: defaultTravelStatusId },
+        { id: approvedTravelStatusId },
+        { id: declinedTravelStatusId },
+      ] = await Promise.all(
+        [
+          {
+            name: "pending",
+            createdById: systemUserId,
+            updatedById: systemUserId,
+          },
+          {
+            name: "approved",
+            createdById: systemUserId,
+            updatedById: systemUserId,
+          },
+          {
+            name: "declined",
+            createdById: systemUserId,
+            updatedById: systemUserId,
+          },
+        ].map((travelStatus) =>
+          tx.travelStatus.upsert({
+            create: travelStatus,
+            update: travelStatus,
+            where: {
+              name: travelStatus.name,
+            },
+            select: { id: true },
+          })
+        )
+      );
+
+      const [] = await Promise.all(
+        [
+          {
+            fromDate: new Date(new Date().setDate(new Date().getDate() - 2)),
+            toDate: new Date(new Date().setDate(new Date().getDate() - 1)),
+            place: "kerala",
+            createdById: muraliUserId,
+            updatedById: muraliUserId,
+            userId: muraliUserId,
+            statusId: defaultTravelStatusId,
+          },
+          {
+            fromDate: new Date(new Date().setDate(new Date().getDate() - 3)),
+            toDate: new Date(new Date().setDate(new Date().getDate() - 2)),
+            place: "ooty",
+            createdById: sakthiUserId,
+            updatedById: sakthiUserId,
+            userId: sakthiUserId,
+            statusId: approvedTravelStatusId,
+          },
+          {
+            fromDate: new Date(new Date().setDate(new Date().getDate() - 4)),
+            toDate: new Date(new Date().setDate(new Date().getDate() - 3)),
+            place: "maharastra",
+            createdById: danielUserId,
+            updatedById: danielUserId,
+            userId: danielUserId,
+            statusId: declinedTravelStatusId,
+          },
+          {
+            fromDate: new Date(new Date().setDate(new Date().getDate() - 3)),
+            toDate: new Date(new Date().setDate(new Date().getDate() - 2)),
+            place: "kanyakumari",
+            createdById: naveenUserId,
+            updatedById: naveenUserId,
+            userId: naveenUserId,
+            statusId: defaultTravelStatusId,
+          },
+          {
+            fromDate: new Date(new Date().setDate(new Date().getDate() - 3)),
+            toDate: new Date(new Date().setDate(new Date().getDate() - 2)),
+            place: "mumbai",
+            createdById: vigneshUserId,
+            updatedById: vigneshUserId,
+            userId: vigneshUserId,
+            statusId: defaultTravelStatusId,
+          },
+        ].map((travel) =>
+          tx.travel.create({
+            data: travel,
+            select: {
+              id: true,
+            },
+          })
+        )
+      );
+
+      const [
+        { id: HealthExpenseTypeId },
+        { id: OfficeExpenseTypeId },
+        { id: HouseRentTypeId },
+        { id: MealTypeId },
+        { id: CommutingTypeId },
+      ] = await Promise.all(
+        [
+          {
+            name: "health",
+            createdById: systemUserId,
+            updatedById: systemUserId,
+          },
+          {
+            name: "office supplies",
+            createdById: systemUserId,
+            updatedById: systemUserId,
+          },
+          {
+            name: "house rent",
+            createdById: systemUserId,
+            updatedById: systemUserId,
+          },
+          {
+            name: "meal",
+            createdById: systemUserId,
+            updatedById: systemUserId,
+          },
+          {
+            name: "commute",
+            createdById: systemUserId,
+            updatedById: systemUserId,
+          },
+        ].map((expenseType) =>
+          tx.expenseType.upsert({
+            create: expenseType,
+            update: expenseType,
+            where: {
+              name: expenseType.name,
+            },
+            select: { id: true },
+          })
+        )
+      );
+
+      const [
+        { id: defaultExpenseStatusId },
+        { id: approvedExpenseStatusId },
+        { id: declinedExpenseStatusId },
+      ] = await Promise.all(
+        [
+          {
+            name: "pending",
+            createdById: systemUserId,
+            updatedById: systemUserId,
+          },
+          {
+            name: "approved",
+            createdById: systemUserId,
+            updatedById: systemUserId,
+          },
+          {
+            name: "declined",
+            createdById: systemUserId,
+            updatedById: systemUserId,
+          },
+        ].map((expenseStatus) =>
+          tx.expenseStatus.upsert({
+            create: expenseStatus,
+            update: expenseStatus,
+            where: {
+              name: expenseStatus.name,
+            },
+            select: { id: true },
+          })
+        )
+      );
+
+      const [] = await Promise.all(
+        [
+          {
+            typeId: HealthExpenseTypeId,
+            amount: 2000,
+            date: new Date(new Date().setFullYear(2023, 7, 22)),
+            userId: muraliUserId,
+            createdById: muraliUserId,
+            updatedById: muraliUserId,
+            statusId: defaultExpenseStatusId,
+          },
+          {
+            typeId: OfficeExpenseTypeId,
+            amount: 1500,
+            date: new Date(new Date().setFullYear(2023, 7, 12)),
+            userId: muraliUserId,
+            createdById: muraliUserId,
+            updatedById: muraliUserId,
+            statusId: approvedExpenseStatusId,
+          },
+          {
+            typeId: HouseRentTypeId,
+            amount: 2800,
+            date: new Date(new Date().setFullYear(2023, 4, 21)),
+            userId: muraliUserId,
+            createdById: muraliUserId,
+            updatedById: muraliUserId,
+            statusId: defaultExpenseStatusId,
+          },
+          {
+            typeId: MealTypeId,
+            amount: 1800,
+            date: new Date(new Date().setFullYear(2023, 5, 3)),
+            userId: muraliUserId,
+            createdById: muraliUserId,
+            updatedById: muraliUserId,
+            statusId: declinedExpenseStatusId,
+          },
+          {
+            typeId: CommutingTypeId,
+            amount: 2000,
+            date: new Date(new Date().setFullYear(2023, 6, 8)),
+            userId: muraliUserId,
+            createdById: muraliUserId,
+            updatedById: muraliUserId,
+            statusId: defaultExpenseStatusId,
+          },
+        ].map((expense) =>
+          tx.expense.create({
+            data: expense,
             select: {
               id: true,
             },

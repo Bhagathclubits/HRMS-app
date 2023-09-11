@@ -3,6 +3,9 @@ import { addressRoutes } from "./routes/addresses";
 import { companyRoutes } from "./routes/company";
 import { departmentRoutes } from "./routes/department";
 import { designationRoutes } from "./routes/designation";
+import { expenseRoutes } from "./routes/expense";
+import { expenseStatusRoutes } from "./routes/expense-status";
+import { expenseTypeRoutes } from "./routes/expense-type";
 import { familyDetailRoutes } from "./routes/family-details";
 import { helpDeskRoutes } from "./routes/help-desks";
 import { helpDeskCategoryRoutes } from "./routes/helpdesk-category";
@@ -13,6 +16,7 @@ import { identificationTypeRoutes } from "./routes/identification/identification
 import { leaveStatusRoutes } from "./routes/leave-status";
 import { leaveRoutes } from "./routes/leaves";
 import { leaveTypeRoutes } from "./routes/leaves/leave-types";
+import { ocrRoutes } from "./routes/ocr";
 import { payRollRoutes } from "./routes/pay-rolls";
 import { personalInfoRoutes } from "./routes/personal-infos";
 import { qualificationRoutes } from "./routes/qualification";
@@ -21,6 +25,8 @@ import { roleRoutes } from "./routes/roles";
 import { sasTokenRoutes } from "./routes/sas-token";
 import { timeSheetRoutes } from "./routes/time-sheets";
 import { timeSheetStatusRoutes } from "./routes/timesheet-status";
+import { travelRoutes } from "./routes/travel";
+import { travelStatusRoutes } from "./routes/travel-status";
 import { userRoutes } from "./routes/users";
 import { visitorPassRoutes } from "./routes/visitor-pass";
 import { visitorPassStatusRoutes } from "./routes/visitor-pass-status";
@@ -52,6 +58,12 @@ export const appRouter = trpc.router({
   identification: identificationRoutes,
   identificationTypes: identificationTypeRoutes,
   sasToken: sasTokenRoutes,
+  travel: travelRoutes,
+  travelStatus: travelStatusRoutes,
+  expense: expenseRoutes,
+  expenseStatus: expenseStatusRoutes,
+  expenseType: expenseTypeRoutes,
+  ocr: ocrRoutes,
 });
 
 // export type definition of API

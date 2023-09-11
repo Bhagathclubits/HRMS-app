@@ -26,8 +26,8 @@ const LazyTimeSheetPage = React.lazy(() => import("../pages/time-sheet"));
 const LazyHelpDeskPage = React.lazy(() => import("../pages/help-desk"));
 const LazyPayRollPage = React.lazy(() => import("../pages/pay-roll"));
 const LazyVisitorPassPage = React.lazy(() => import("../pages/visitor-pass"));
-// const LazyExpensePage = React.lazy(() => import("../pages/expense"));
-// const LazyTravelPage = React.lazy(() => import("../pages/travel"));
+const LazyExpensePage = React.lazy(() => import("../pages/expense"));
+const LazyTravelPage = React.lazy(() => import("../pages/travel"));
 // const LazyLoanPage = React.lazy(() => import("../pages/loan"));
 
 const LazyLoginPageWithFallback = () => (
@@ -116,20 +116,20 @@ const LazyVisitorPassPageWithFallback = () => (
 //     </ProtectedRoute>
 //   </React.Suspense>
 // );
-// const LazyExpensePageWithFallback = () => (
-//   <React.Suspense fallback={"Loading..."}>
-//     <ProtectedRoute>
-//       <LazyExpensePage />
-//     </ProtectedRoute>
-//   </React.Suspense>
-// );
-// const LazyTravelPageWithFallback = () => (
-//   <React.Suspense fallback={"Loading..."}>
-//     <ProtectedRoute>
-//       <LazyTravelPage />
-//     </ProtectedRoute>
-//   </React.Suspense>
-// );
+const LazyExpensePageWithFallback = () => (
+  <React.Suspense fallback={"Loading..."}>
+    <ProtectedRoute>
+      <LazyExpensePage />
+    </ProtectedRoute>
+  </React.Suspense>
+);
+const LazyTravelPageWithFallback = () => (
+  <React.Suspense fallback={"Loading..."}>
+    <ProtectedRoute>
+      <LazyTravelPage />
+    </ProtectedRoute>
+  </React.Suspense>
+);
 
 export type ProtectedRouteProps = {
   children: React.ReactNode;
@@ -268,6 +268,16 @@ export const router = createBrowserRouter([
           },
         ],
       },
+      {
+        path: "expense/*",
+        element: <Outlet />,
+        children: [
+          {
+            path: "",
+            element: <LazyExpensePageWithFallback />,
+          },
+        ],
+      },
       // {
       //   path: "loan/*",
       //   element: <Outlet />,
@@ -278,26 +288,17 @@ export const router = createBrowserRouter([
       //     },
       //   ],
       // },
-      // {
-      //   path: "expense/*",
-      //   element: <Outlet />,
-      //   children: [
-      //     {
-      //       path: "",
-      //       element: <LazyExpensePageWithFallback />,
-      //     },
-      //   ],
-      // },
-      // {
-      //   path: "travel/*",
-      //   element: <Outlet />,
-      //   children: [
-      //     {
-      //       path: "",
-      //       element: <LazyTravelPageWithFallback />,
-      //     },
-      //   ],
-      // },
+
+      {
+        path: "travel/*",
+        element: <Outlet />,
+        children: [
+          {
+            path: "",
+            element: <LazyTravelPageWithFallback />,
+          },
+        ],
+      },
       {
         path: "*",
         element: <LazyUnderMaintenancePageWithFallback />,
