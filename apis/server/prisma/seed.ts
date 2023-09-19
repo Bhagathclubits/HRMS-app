@@ -24,6 +24,7 @@ const main = async () => {
       await tx.helpDesk.deleteMany();
       await tx.expense.deleteMany();
       await tx.travel.deleteMany();
+      await tx.loan.deleteMany();
 
       const { id: systemRoleId } = await tx.role.upsert({
         create: {
@@ -1728,6 +1729,141 @@ const main = async () => {
         ].map((travel) =>
           tx.travel.create({
             data: travel,
+            select: {
+              id: true,
+            },
+          })
+        )
+      );
+
+      const [
+        { id: PersonalLoanTypeId },
+        { id: HomeLoanTypeId },
+        { id: AutoLoanTypeId },
+        { id: StudentLoanTypeId },
+        { id: BusinessLoanTypeId },
+      ] = await Promise.all(
+        [
+          {
+            name: "personal loan",
+            createdById: systemUserId,
+            updatedById: systemUserId,
+          },
+          {
+            name: "home loan",
+            createdById: systemUserId,
+            updatedById: systemUserId,
+          },
+          {
+            name: "auto loan",
+            createdById: systemUserId,
+            updatedById: systemUserId,
+          },
+          {
+            name: "student loan",
+            createdById: systemUserId,
+            updatedById: systemUserId,
+          },
+          {
+            name: "business loan",
+            createdById: systemUserId,
+            updatedById: systemUserId,
+          },
+        ].map((loanType) =>
+          tx.loanType.upsert({
+            create: loanType,
+            update: loanType,
+            where: {
+              name: loanType.name,
+            },
+            select: { id: true },
+          })
+        )
+      );
+
+      const [
+        { id: defaultLoanStatusId },
+        { id: approvedLoanStatusId },
+        { id: declinedLoanStatusId },
+      ] = await Promise.all(
+        [
+          {
+            name: "pending",
+            createdById: systemUserId,
+            updatedById: systemUserId,
+          },
+          {
+            name: "approved",
+            createdById: systemUserId,
+            updatedById: systemUserId,
+          },
+          {
+            name: "declined",
+            createdById: systemUserId,
+            updatedById: systemUserId,
+          },
+        ].map((loanStatus) =>
+          tx.loanStatus.upsert({
+            create: loanStatus,
+            update: loanStatus,
+            where: {
+              name: loanStatus.name,
+            },
+            select: { id: true },
+          })
+        )
+      );
+
+      const [] = await Promise.all(
+        [
+          {
+            typeId: PersonalLoanTypeId,
+            amount: 200000,
+            date: new Date(new Date().setFullYear(2023, 7, 22)),
+            userId: muraliUserId,
+            createdById: muraliUserId,
+            updatedById: muraliUserId,
+            statusId: defaultLoanStatusId,
+          },
+          {
+            typeId: HomeLoanTypeId,
+            amount: 150000,
+            date: new Date(new Date().setFullYear(2023, 7, 12)),
+            userId: muraliUserId,
+            createdById: muraliUserId,
+            updatedById: muraliUserId,
+            statusId: approvedLoanStatusId,
+          },
+          {
+            typeId: AutoLoanTypeId,
+            amount: 2800,
+            date: new Date(new Date().setFullYear(2023, 4, 21)),
+            userId: muraliUserId,
+            createdById: muraliUserId,
+            updatedById: muraliUserId,
+            statusId: defaultLoanStatusId,
+          },
+          {
+            typeId: StudentLoanTypeId,
+            amount: 180000,
+            date: new Date(new Date().setFullYear(2023, 5, 3)),
+            userId: muraliUserId,
+            createdById: muraliUserId,
+            updatedById: muraliUserId,
+            statusId: declinedLoanStatusId,
+          },
+          {
+            typeId: BusinessLoanTypeId,
+            amount: 200000,
+            date: new Date(new Date().setFullYear(2023, 6, 8)),
+            userId: muraliUserId,
+            createdById: muraliUserId,
+            updatedById: muraliUserId,
+            statusId: defaultLoanStatusId,
+          },
+        ].map((loan) =>
+          tx.loan.create({
+            data: loan,
             select: {
               id: true,
             },

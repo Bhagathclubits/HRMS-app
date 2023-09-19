@@ -285,14 +285,14 @@ const TravelPage = () => {
             <input
               type="text"
               className="form-control form-control-sm"
-              placeholder="Travel ID"
+              placeholder="From"
             />
           </Grid.Col>
           <Grid.Col className="py-2" cols={["12", "md-2"]}>
             <input
               type="text"
               className="form-control form-control-sm"
-              placeholder="Details"
+              placeholder="Place"
             />
           </Grid.Col>
           <Grid.Row>
@@ -300,7 +300,7 @@ const TravelPage = () => {
               <input
                 type="text"
                 className="form-control form-control-sm"
-                placeholder="From"
+                placeholder="Emp.Name"
               />
             </Grid.Col>
             <Grid.Col className="py-2" cols={["12", "md-2"]}>

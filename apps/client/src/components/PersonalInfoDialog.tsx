@@ -6,6 +6,7 @@ import { Department } from "server/src/trpc/routes/department/get-many";
 import { Designation } from "server/src/trpc/routes/designation/get-many";
 import Button from "ui/Button";
 import Dialog from "ui/Dialog";
+import Divider from "ui/Divider";
 import Grid from "ui/Grid";
 import Stack from "ui/Stack";
 import Typography from "ui/Typography";
@@ -15,6 +16,7 @@ import { useAuthContext } from "../hooks/UseAuth";
 import { client } from "../main";
 import { uploadFileToBlob } from "../utils/azure-blob-upload";
 import { handleTRPCError } from "../utils/handle-trpc-error";
+
 export type PersonalInfoDialogProps = {
   asyncList: AsyncListContextValue;
 };
@@ -26,20 +28,26 @@ export const PersonalInfoDialog = (props: PersonalInfoDialogProps) => {
   const [lastName, setLastName] = React.useState("");
   const [dateOfBirth, setDateOfBirth] = React.useState(`${new Date()}`);
   const [dateOfJoining, setDateOfJoining] = React.useState(`${new Date()}`);
-
   const [department, setDepartment] = React.useState<Department[]>([]);
   const [departmentId, setDepartmentId] = React.useState<number>();
   const [designation, setDesignation] = React.useState<Designation[]>([]);
   const [designationId, setDesignationId] = React.useState<number>();
   const [reportingManagerId, setReportingManagerId] = React.useState<number>(2);
   const [fileSelected, setFileSelected] = React.useState<File>();
-  const [uploading, setUploading] = React.useState(false);
   const [fileSizeExceedError, setFileSizeExceedError] = React.useState("");
+  const [extractionInProgress, setExtractionInProgress] = React.useState(false);
+  const [uploadLabel, setUploadLabel] = React.useState(
+    "Choose Passport to Upload"
+  );
+  const value = useDialog();
 
-  const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onProfileImageFileChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     if (!event.target.files) return;
 
     const [file] = event.target.files;
+
     const fileSize = file.size;
     const fileMb = fileSize / 1024 ** 2;
 
@@ -55,18 +63,48 @@ export const PersonalInfoDialog = (props: PersonalInfoDialogProps) => {
     setFileSelected(file);
   };
 
+  const onOCRFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (!event.target.files) return;
+
+    const [file] = event.target.files;
+
+    if (!file) return;
+
+    setExtractionInProgress(true);
+
+    await OCR(file);
+  };
+
+  const OCR = async (file: File) => {
+    try {
+      const { sasToken } = await client.sasToken.get.mutate();
+
+      const imageUrl = await uploadFileToBlob(file, sasToken);
+
+      const ocrResult = await client.ocr.get.mutate(imageUrl);
+
+      setFirstName(ocrResult.extractedDetails?.GivenName || "");
+      setLastName(ocrResult.extractedDetails?.Surname || "");
+      setUploadLabel("Extraction Completed");
+    } catch (error) {
+      toast.error("An error occurred.");
+      handleTRPCError(error, auth);
+    } finally {
+      setExtractionInProgress(false);
+    }
+  };
+
   const AddPersonalInfo = async () => {
     try {
       if (!fileSelected) return;
 
       const { sasToken } = await client.sasToken.get.mutate();
 
-      setUploading(true);
-
       const imageUrl = await uploadFileToBlob(fileSelected, sasToken);
 
       setFileSelected(undefined);
-      setUploading(false);
 
       if (departmentId === undefined) return;
 
@@ -85,14 +123,13 @@ export const PersonalInfoDialog = (props: PersonalInfoDialogProps) => {
       });
 
       props.asyncList.refresh();
+
       toast.success("Personal information added successfully!");
     } catch (error) {
       toast.error("An error occurred.");
       handleTRPCError(error, auth);
     }
   };
-
-  const value = useDialog();
 
   React.useEffect(() => {
     (async () => {
@@ -130,14 +167,19 @@ export const PersonalInfoDialog = (props: PersonalInfoDialogProps) => {
     })();
   }, []);
 
+  const handleClose = () => {
+    setUploadLabel("Choose Passport to Upload");
+  };
+
   return (
     <>
       <Dialog.Trigger {...value} variant="primary">
         Add Personal Info
       </Dialog.Trigger>
 
-      <Dialog {...value}>
+      <Dialog {...value} onClose={handleClose}>
         <Dialog.Header title="Add Personal Info" />
+
         <Dialog.Body style={{ minHeight: "70vh" }}>
           <Stack gap="3">
             <Grid.Row gutters="3">
@@ -145,6 +187,7 @@ export const PersonalInfoDialog = (props: PersonalInfoDialogProps) => {
                 <label htmlFor="Photo">
                   <Typography>Photo</Typography>
                 </label>
+
                 <label
                   style={{
                     height: 100,
@@ -169,9 +212,10 @@ export const PersonalInfoDialog = (props: PersonalInfoDialogProps) => {
                   }}
                   className="form-control"
                   id="personalInfoImageFile"
-                  onChange={onFileChange}
+                  onChange={onProfileImageFileChange}
                 />
               </Grid.Col>
+
               {fileSizeExceedError ? (
                 <Typography as="p" color="danger" wrap="nowrap">
                   {fileSizeExceedError}
@@ -190,6 +234,7 @@ export const PersonalInfoDialog = (props: PersonalInfoDialogProps) => {
                   <label htmlFor="First Name">First Name</label>
                 </div>
               </Grid.Col>
+
               <Grid.Col cols={["12", "lg-6"]}>
                 <div className="form-floating">
                   <input
@@ -202,6 +247,7 @@ export const PersonalInfoDialog = (props: PersonalInfoDialogProps) => {
                   <label htmlFor="Middle Name">Middle Name</label>
                 </div>
               </Grid.Col>
+
               <Grid.Col cols={["12", "lg-6"]}>
                 <div className="form-floating">
                   <input
@@ -228,6 +274,7 @@ export const PersonalInfoDialog = (props: PersonalInfoDialogProps) => {
                   <label htmlFor="DateOfBirth">Date Of Birth</label>
                 </div>
               </Grid.Col>
+
               <Grid.Col cols={["12", "lg-6"]}>
                 <div className="form-floating">
                   <input
@@ -261,6 +308,7 @@ export const PersonalInfoDialog = (props: PersonalInfoDialogProps) => {
                   <label htmlFor="Department">Department</label>
                 </div>
               </Grid.Col>
+
               <Grid.Col cols={["12", "lg-6"]}>
                 <div className="form-floating">
                   <select
@@ -282,9 +330,41 @@ export const PersonalInfoDialog = (props: PersonalInfoDialogProps) => {
                   <label htmlFor="Designation">Designation</label>
                 </div>
               </Grid.Col>
+
+              <Divider />
+
+              <Grid.Col cols={["12", "lg-12"]}>
+                <Stack gap="3">
+                  <label
+                    style={{
+                      height: 100,
+                      width: "auto",
+                      display: "flex",
+                      justifyContent: "space-evenly",
+                      alignItems: "center",
+                    }}
+                    className="form-control"
+                    htmlFor="ocrImageFile"
+                  >
+                    {extractionInProgress
+                      ? "Extraction in Progress..."
+                      : uploadLabel}
+                  </label>
+                  <input
+                    type="file"
+                    style={{
+                      display: "none",
+                    }}
+                    className="form-control"
+                    id="ocrImageFile"
+                    onChange={onOCRFileChange}
+                  />
+                </Stack>
+              </Grid.Col>
             </Grid.Row>
           </Stack>
         </Dialog.Body>
+
         <Dialog.Footer>
           <Button
             variant="outline-primary"

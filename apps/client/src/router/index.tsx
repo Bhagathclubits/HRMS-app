@@ -28,6 +28,7 @@ const LazyPayRollPage = React.lazy(() => import("../pages/pay-roll"));
 const LazyVisitorPassPage = React.lazy(() => import("../pages/visitor-pass"));
 const LazyExpensePage = React.lazy(() => import("../pages/expense"));
 const LazyTravelPage = React.lazy(() => import("../pages/travel"));
+const LazyLoanPage = React.lazy(() => import("../pages/loan"));
 // const LazyLoanPage = React.lazy(() => import("../pages/loan"));
 
 const LazyLoginPageWithFallback = () => (
@@ -127,6 +128,14 @@ const LazyTravelPageWithFallback = () => (
   <React.Suspense fallback={"Loading..."}>
     <ProtectedRoute>
       <LazyTravelPage />
+    </ProtectedRoute>
+  </React.Suspense>
+);
+
+const LazyLoanPageWithFallback = () => (
+  <React.Suspense fallback={"Loading..."}>
+    <ProtectedRoute>
+      <LazyLoanPage />
     </ProtectedRoute>
   </React.Suspense>
 );
@@ -278,17 +287,16 @@ export const router = createBrowserRouter([
           },
         ],
       },
-      // {
-      //   path: "loan/*",
-      //   element: <Outlet />,
-      //   children: [
-      //     {
-      //       path: "",
-      //       element: <LazyLoanPageWithFallback />,
-      //     },
-      //   ],
-      // },
-
+      {
+        path: "loan/*",
+        element: <Outlet />,
+        children: [
+          {
+            path: "",
+            element: <LazyLoanPageWithFallback />,
+          },
+        ],
+      },
       {
         path: "travel/*",
         element: <Outlet />,

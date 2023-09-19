@@ -16,6 +16,9 @@ import { identificationTypeRoutes } from "./routes/identification/identification
 import { leaveStatusRoutes } from "./routes/leave-status";
 import { leaveRoutes } from "./routes/leaves";
 import { leaveTypeRoutes } from "./routes/leaves/leave-types";
+import { loanRoutes } from "./routes/loan";
+import { loanStatusRoutes } from "./routes/loan-status";
+import { loanTypeRoutes } from "./routes/loan-type";
 import { ocrRoutes } from "./routes/ocr";
 import { payRollRoutes } from "./routes/pay-rolls";
 import { personalInfoRoutes } from "./routes/personal-infos";
@@ -63,6 +66,9 @@ export const appRouter = trpc.router({
   expense: expenseRoutes,
   expenseStatus: expenseStatusRoutes,
   expenseType: expenseTypeRoutes,
+  loan: loanRoutes,
+  loanStatus: loanStatusRoutes,
+  loanType: loanTypeRoutes,
   ocr: ocrRoutes,
 });
 

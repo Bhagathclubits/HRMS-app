@@ -270,14 +270,14 @@ const ExpensePage = () => {
             <input
               type="text"
               className="form-control form-control-sm"
-              placeholder="From"
+              placeholder="Expense Type"
             />
           </Grid.Col>
           <Grid.Col className="py-2" cols={["12", "md-2"]}>
             <input
               type="text"
               className="form-control form-control-sm"
-              placeholder="DOJ"
+              placeholder="Date"
             />
           </Grid.Col>
           <Grid.Row>
@@ -292,7 +292,7 @@ const ExpensePage = () => {
               <input
                 type="text"
                 className="form-control form-control-sm"
-                placeholder="To"
+                placeholder="Amount"
               />
             </Grid.Col>
             <Grid.Col className="py-2" cols={["12", "md-2"]}>

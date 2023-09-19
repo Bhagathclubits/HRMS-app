@@ -1,3 +1,4 @@
+import React from "react";
 import Box from "./Box";
 import Button, { ButtonProps } from "./Button";
 import Link, { LinkProps } from "./Link";
@@ -37,11 +38,26 @@ export type DialogProps = JSX.IntrinsicElements["div"] &
   DialogContextValue & {
     children: React.ReactNode;
     modalDialogSize?: keyof typeof modalDialogSizesMap;
+    onClose?: () => void;
   };
 
 export const Dialog = (props: DialogProps) => {
   const domProps = { ...props } as Partial<DialogProps>;
   delete domProps.labelId;
+
+  React.useEffect(() => {
+    const dialogRef = document.getElementById(props.id);
+
+    if (!dialogRef || !props.onClose) return;
+
+    dialogRef.addEventListener("hide.bs.modal", props.onClose);
+
+    return () => {
+      if (!dialogRef || !props.onClose) return;
+
+      dialogRef.removeEventListener("hide.bs.modal", props.onClose);
+    };
+  }, []);
 
   return (
     <DialogContext.Provider value={props}>

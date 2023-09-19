@@ -18,6 +18,8 @@ export const envVariables = z.object({
   AZURE_EMAIL_SERVICE_ACCESS_KEY: z.string(),
   AZURE_EMAIL_SERVICE_ENDPOINT: z.string(),
   AZURE_EMAIL_SERVICE_SENDER_ADDRESS: z.string(),
+  AZURE_COMPUTER_VISION_ENDPOINT: z.string(),
+  AZURE_COMPUTER_VISION_API_KEY: z.string(),
 });
 
 declare global {

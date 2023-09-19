@@ -75,6 +75,58 @@ model Designation {
   @@map("designations")
 }
 
+model LoanType {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique @db.VarChar(64)
+  createdAt   DateTime @default(now()) @map("created_at")
+  createdById Int      @map("created_by_id")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  updatedById Int      @map("updated_by_id")
+  createdBy   User     @relation("LoanTypeCreatedByUser", fields: [createdById], references: [id], onUpdate: NoAction)
+  updatedBy   User     @relation("LoanTypeUpdatedByUser", fields: [updatedById], references: [id], onUpdate: NoAction)
+  loans       Loan[]   @relation("LoanOfLoanType")
+
+  @@map("loan_types")
+}
+
+model LoanStatus {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique @db.VarChar(64)
+  createdAt   DateTime @default(now()) @map("created_at")
+  createdById Int      @map("created_by_id")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  updatedById Int      @map("updated_by_id")
+  createdBy   User     @relation("LoanStatusCreatedByUser", fields: [createdById], references: [id], onUpdate: NoAction)
+  updatedBy   User     @relation("LoanStatusUpdatedByUser", fields: [updatedById], references: [id], onUpdate: NoAction)
+  loans       Loan[]   @relation("LoanOfLoanStatus")
+
+  @@map("loan_status")
+}
+
+model Loan {
+  id       Int        @id @default(autoincrement())
+  amount   Decimal    @db.Decimal
+  userId   Int        @map("user_id")
+  date     DateTime   @map("date")
+  remarks  String?
+  type     LoanType   @relation("LoanOfLoanType", fields: [typeId], references: [id], onUpdate: NoAction, onDelete: NoAction)
+  typeId   Int        @map("type_id")
+  status   LoanStatus @relation("LoanOfLoanStatus", fields: [statusId], references: [id], onUpdate: NoAction)
+  statusId Int        @map("status_id")
+
+  //Audit Files
+  createdAt   DateTime @default(now()) @map("created_at") @db.DateTime2
+  createdById Int      @map("created_by_id")
+  createdBy   User     @relation("LoanCreatedByUser", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user        User     @relation("LoanOfUser", fields: [userId], references: [id], onUpdate: NoAction)
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.DateTime2
+  updatedById Int      @map("updated_by_id")
+  updatedBy   User     @relation("LoanUpdatedByUser", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([userId, typeId, date])
+  @@map("loan")
+}
+
 model ExpenseType {
   id          Int       @id @default(autoincrement())
   name        String    @unique @db.VarChar(64)
@@ -674,6 +726,10 @@ model User {
   expensesCreated     Expense[]     @relation("ExpenseCreatedByUser")
   expensesUpdated     Expense[]     @relation("ExpenseUpdatedByUser")
 
+  loans        Loan[] @relation("LoanOfUser")
+  loansCreated Loan[] @relation("LoanCreatedByUser")
+  lonsUpdated  Loan[] @relation("LoanUpdatedByUser")
+
   travels        Travel[] @relation("TravelOfUser")
   travelsCreated Travel[] @relation("TravelCreatedByUser")
   travelsUpdated Travel[] @relation("TravelUpdatedByUser")
@@ -769,7 +825,12 @@ model User {
   expenseStatusesCreated ExpenseStatus[] @relation("ExpenseStatusCreatedByUser")
   expenseStatusesUpdated ExpenseStatus[] @relation("ExpenseStatusUpdatedByUser")
   expenseTypesCreated    ExpenseType[]   @relation("ExpenseTypeCreatedByUser")
-  ExpenseTypesUpdated    ExpenseType[]   @relation("ExpenseTypeUpdatedByUser")
+  expenseTypesUpdated    ExpenseType[]   @relation("ExpenseTypeUpdatedByUser")
+
+  loanStatusesCreated LoanStatus[] @relation("LoanStatusCreatedByUser")
+  loanStatusesUpdated LoanStatus[] @relation("LoanStatusUpdatedByUser")
+  loanTypesCreated    LoanType[]   @relation("LoanTypeCreatedByUser")
+  loanTypesUpdated    LoanType[]   @relation("LoanTypeUpdatedByUser")
 
   @@unique([username, mobile])
   @@unique([username, email])
