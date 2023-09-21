@@ -6,6 +6,11 @@ body,
   font-size: 0.935rem;
 }
 
+.reportClass {
+  height: 900px;
+  width: 100%;
+}
+
 @media print {
   body {
     visibility: hidden;

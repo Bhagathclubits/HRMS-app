@@ -39,9 +39,7 @@ const LazyLoginPageWithFallback = () => (
 const LazyHomePageWithFallback = () => (
   <React.Suspense fallback={"Loading..."}>
     <ProtectedRoute>
-      <ShowIf.Employee>
-        <LazyHomePage />
-      </ShowIf.Employee>
+      <LazyHomePage />
     </ProtectedRoute>
   </React.Suspense>
 );
@@ -176,16 +174,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: (
-          <>
-            <ShowIf.Employee>
-              <Navigate to="home" />
-            </ShowIf.Employee>
-            <ShowIf.Admin>
-              <Navigate to="account" />
-            </ShowIf.Admin>
-          </>
-        ),
+        element: <Navigate to="home" />,
       },
       {
         path: "home/*",

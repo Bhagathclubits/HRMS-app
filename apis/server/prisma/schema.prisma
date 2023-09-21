@@ -8,6 +8,10 @@ datasource db {
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
+model PowerBI {
+  accessToken String @unique @map("access_token") @db.VarChar(2048)
+}
+
 model AddressType {
   id          Int       @id @default(autoincrement())
   name        String    @unique @db.VarChar(64)

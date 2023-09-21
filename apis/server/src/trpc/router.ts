@@ -22,6 +22,7 @@ import { loanTypeRoutes } from "./routes/loan-type";
 import { ocrRoutes } from "./routes/ocr";
 import { payRollRoutes } from "./routes/pay-rolls";
 import { personalInfoRoutes } from "./routes/personal-infos";
+import { powerbiRoutes } from "./routes/powerbi";
 import { qualificationRoutes } from "./routes/qualification";
 import { relationShipRoutes } from "./routes/relationship";
 import { roleRoutes } from "./routes/roles";
@@ -70,6 +71,7 @@ export const appRouter = trpc.router({
   loanStatus: loanStatusRoutes,
   loanType: loanTypeRoutes,
   ocr: ocrRoutes,
+  powerbi: powerbiRoutes,
 });
 
 // export type definition of API
