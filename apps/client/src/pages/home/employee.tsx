@@ -1,7 +1,9 @@
 import Grid from "ui/Grid";
 import LeaveCard from "../../components/LeaveCard";
+import PayRollCard from "../../components/PayRollCard";
 import ProfileCard from "../../components/ProfileCard";
-import { TimeSheetCard } from "../../components/TimeSheetCard";
+// import { TimeSheetCard } from "../../components/TimeSheetCard";
+
 export const EmployeeDashboard = () => {
   return (
     <Grid.Row gutters="3">
@@ -12,8 +14,8 @@ export const EmployeeDashboard = () => {
         <LeaveCard />
       </Grid.Col>
       <Grid.Col cols="12">
-        {/* <PayRollCard /> */}
-        <TimeSheetCard />
+        <PayRollCard />
+        {/* <TimeSheetCard /> */}
       </Grid.Col>
     </Grid.Row>
   );
