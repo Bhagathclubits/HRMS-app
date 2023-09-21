@@ -9,7 +9,10 @@ datasource db {
 }
 
 model PowerBI {
-  accessToken String @unique @map("access_token") @db.VarChar(2048)
+  id          Int    @unique @default(autoincrement())
+  accessToken String @map("access_token") @db.VarChar(2048)
+
+  @@map("power_bi")
 }
 
 model AddressType {
