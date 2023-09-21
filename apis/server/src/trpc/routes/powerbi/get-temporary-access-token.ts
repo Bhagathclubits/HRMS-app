@@ -7,13 +7,15 @@ import { adminOnlyProcedure } from "../../trpc";
 export const getTemporaryAccessToken = adminOnlyProcedure.mutation(
   async ({ ctx, input }) => {
     try {
-      const { accessToken } = await prisma.powerBI.findFirstOrThrow({
+      const [first] = await prisma.powerBI.findMany({
         select: {
           accessToken: true,
         },
       });
 
-      return { token: accessToken };
+      if (!first) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+
+      return { token: first.accessToken };
     } catch (error) {
       console.log(getErrorMessage(error));
 
