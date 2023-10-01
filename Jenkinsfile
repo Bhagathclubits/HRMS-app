@@ -15,10 +15,13 @@ pipeline {
                 script {
                     // Use the 'Username with password' credential for GitHub
                     withCredentials([usernamePassword(credentialsId: 'github', usernameVariable: 'GITHUB_USERNAME', passwordVariable: 'GITHUB_PASSWORD')]) {
+                        // Extract the username from the credential
+                        def githubUsername = env.GITHUB_USERNAME
+                        
                         // Login to Docker with the 'dockerPass' credential
                         def dockerCreds = credentials('dockerPass')
 
-                        sh "docker login -u ${dockerCreds.getUsername()} -p ${dockerCreds.getPassword()} docker.io"
+                        sh "docker login -u $githubUsername -p ${dockerCreds.getPassword()} docker.io"
                         sh "docker build -t $DOCKER_IMAGE_TAG ."
                     }
                 }
