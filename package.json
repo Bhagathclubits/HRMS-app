@@ -12,6 +12,7 @@
     "eslint-config-custom": "*",
     "prettier": "^2.5.1",
     "turbo": "latest"
+    "vite": "^2.0.0" 
   },
   "name": "clubits",
   "description": "monorepo for clubits",
