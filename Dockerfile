@@ -4,8 +4,8 @@ FROM node:18.18.0
 # Set the working directory in the container
 WORKDIR /app
 
-# Check if Yarn is already installed, and if not, install it
-RUN yarn --version || npm install -g yarn
+# Install npm globally (if needed)
+RUN npm install -g yarn
 
 # Copy package.json and yarn.lock to the working directory
 COPY package.json yarn.lock ./
@@ -13,8 +13,8 @@ COPY package.json yarn.lock ./
 # Install app dependencies using yarn
 RUN yarn install
 
-# Install vite as a devDependency
-RUN yarn add vite --dev
+# Add Vite to the "client" workspace
+RUN yarn workspace client add vite --dev
 
 # Copy the rest of the application code
 COPY . .
