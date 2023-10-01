@@ -1,0 +1,49 @@
+0 verbose cli /opt/nodejs/bin/node /usr/local/bin/npm
+1 info using npm@9.8.1
+2 info using node@v18.18.0
+3 timing npm:load:whichnode Completed in 2ms
+4 timing config:load:defaults Completed in 3ms
+5 timing config:load:file:/opt/nodejs/lib/node_modules/npm/npmrc Completed in 11ms
+6 timing config:load:builtin Completed in 11ms
+7 timing config:load:cli Completed in 3ms
+8 timing config:load:env Completed in 0ms
+9 timing config:load:file:/opt/.npmrc Completed in 0ms
+10 timing config:load:project Completed in 1ms
+11 timing config:load:file:/root/.npmrc Completed in 0ms
+12 timing config:load:user Completed in 1ms
+13 timing config:load:file:/opt/nodejs/etc/npmrc Completed in 0ms
+14 timing config:load:global Completed in 2ms
+15 timing config:load:setEnvs Completed in 2ms
+16 timing config:load Completed in 23ms
+17 timing npm:load:configload Completed in 23ms
+18 timing config:load:flatten Completed in 4ms
+19 timing npm:load:mkdirpcache Completed in 1ms
+20 timing npm:load:mkdirplogs Completed in 0ms
+21 verbose title npm start
+22 verbose argv "start"
+23 timing npm:load:setTitle Completed in 1ms
+24 timing npm:load:display Completed in 1ms
+25 verbose logfile logs-max:10 dir:/root/.npm/_logs/2023-10-01T08_29_49_047Z-
+26 verbose logfile /root/.npm/_logs/2023-10-01T08_29_49_047Z-debug-0.log
+27 timing npm:load:logFile Completed in 11ms
+28 timing npm:load:timers Completed in 0ms
+29 timing npm:load:configScope Completed in 0ms
+30 timing npm:load Completed in 64ms
+31 timing command:run-script Completed in 95ms
+32 timing command:start Completed in 103ms
+33 verbose stack Error: Could not read package.json: Error: ENOENT: no such file or directory, open '/opt/package.json'
+34 verbose cwd /opt
+35 verbose Linux 5.19.0-1025-aws
+36 verbose node v18.18.0
+37 verbose npm  v9.8.1
+38 error code ENOENT
+39 error syscall open
+40 error path /opt/package.json
+41 error errno -2
+42 error enoent Could not read package.json: Error: ENOENT: no such file or directory, open '/opt/package.json'
+43 error enoent This is related to npm not being able to find a file.
+43 error enoent
+44 verbose exit -2
+45 timing npm Completed in 216ms
+46 verbose code -2
+47 error A complete log of this run can be found in: /root/.npm/_logs/2023-10-01T08_29_49_047Z-debug-0.log
