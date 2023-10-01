@@ -10,6 +10,9 @@ COPY package.json* yarn.lock ./
 # Install app dependencies using yarn
 RUN yarn install
 
+# Install Vite as a devDependency
+RUN yarn add vite --dev
+
 # Copy the rest of the application code
 COPY . .
 
