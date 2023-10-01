@@ -13,8 +13,8 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Use the 'Secret text' credential for GitHub
-                    withCredentials([string(credentialsId: 'github', variable: 'GITHUB_CREDENTIALS')]) {
+                    // Use the 'Username with password' credential for GitHub
+                    withCredentials([usernamePassword(credentialsId: 'github', usernameVariable: 'GITHUB_USERNAME', passwordVariable: 'GITHUB_PASSWORD')]) {
                         // Login to Docker with the 'dockerPass' credential
                         def dockerCreds = credentials('dockerPass')
 
