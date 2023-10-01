@@ -14,7 +14,7 @@ pipeline {
                     def dockerPassword = credentials('DOCKER_PASSWORD')
 
                     // Use 'docker login' with the -p flag
-                    sh "docker login -u dockadministrator -p ${dockerPassword} docker.io"
+                    sh(script: "docker login -u dockadministrator -p ${dockerPassword} docker.io", returnStatus: true)
                     sh "docker build -t myimage:latest ."
                 }
             }
@@ -25,7 +25,7 @@ pipeline {
                     // Retrieve the Docker password securely
                     def dockerPassword = credentials('DOCKER_PASSWORD')
 
-                    sh "docker login -u dockadministrator -p ${dockerPassword} docker.io"
+                    sh(script: "docker login -u dockadministrator -p ${dockerPassword} docker.io", returnStatus: true)
                     sh "docker pull myimage:latest"
                     sh "docker run -d -p 3000:3000 --name mycont myimage:latest"
                 }
@@ -33,4 +33,3 @@ pipeline {
         }
     }
 }
-
