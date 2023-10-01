@@ -18,7 +18,8 @@ pipeline {
                         // Retrieve the Docker password securely
                         def dockerPassword = sh(script: 'echo \$DOCKER_PASSWORD', returnStdout: true).trim()
 
-                        sh "docker login -u $githubUsername -p $dockerPassword docker.io"
+                        // Use 'docker login' with --password-stdin
+                        sh "echo $dockerPassword | docker login -u $githubUsername --password-stdin docker.io"
                         sh "docker build -t myimage:latest ."
                     }
                 }
@@ -30,7 +31,8 @@ pipeline {
                     // Retrieve the Docker password securely
                     def dockerPassword = sh(script: 'echo \$DOCKER_PASSWORD', returnStdout: true).trim()
 
-                    sh "docker login -u dockadministrator -p $dockerPassword"
+                    // Use 'docker login' with --password-stdin
+                    sh "echo $dockerPassword | docker login -u dockadministrator --password-stdin docker.io"
                     sh "docker pull myimage:latest"
                     sh "docker run -d -p 3000:3000 --name mycont myimage:latest"
                 }
