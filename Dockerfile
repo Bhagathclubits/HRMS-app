@@ -2,10 +2,10 @@
 FROM node:18.18.0
 
 # Set the working directory in the container
-WORKDIR /app
+WORKDIR /usr/src/app
 
 # Copy package.json and yarn.lock to the working directory
-COPY package.json yarn.lock ./
+COPY package.json* yarn.lock ./
 
 # Install app dependencies using yarn
 RUN yarn install
