@@ -16,20 +16,19 @@ pipeline {
                         def githubUsername = env.GITHUB_USERNAME
 
                         // Retrieve the Docker password securely
-                        withCredentials([secretText(credentialsId: 'dockerPass', secretVariable: 'DOCKER_PASSWORD')]) {
-                            def dockerPassword = DOCKER_PASSWORD
+                        def dockerPassword = sh(script: 'echo \$DOCKER_PASSWORD', returnStdout: true).trim()
 
-                            sh "docker login -u $githubUsername -p $dockerPassword docker.io"
-                            sh "docker build -t myimage:latest ."
-                        }
+                        sh "docker login -u $githubUsername -p $dockerPassword docker.io"
+                        sh "docker build -t myimage:latest ."
                     }
                 }
             }
         }
         stage('Deploy to Docker Host') {
             steps {
-                withCredentials([secretText(credentialsId: 'dockerPass', secretVariable: 'DOCKER_PASSWORD')]) {
-                    def dockerPassword = DOCKER_PASSWORD
+                script {
+                    // Retrieve the Docker password securely
+                    def dockerPassword = sh(script: 'echo \$DOCKER_PASSWORD', returnStdout: true).trim()
 
                     sh "docker login -u dockadministrator -p $dockerPassword"
                     sh "docker pull myimage:latest"
@@ -39,3 +38,4 @@ pipeline {
         }
     }
 }
+
