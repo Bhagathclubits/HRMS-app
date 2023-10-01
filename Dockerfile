@@ -10,8 +10,8 @@ COPY package.json* yarn.lock ./
 # Install app dependencies using yarn
 RUN yarn install
 
-# Install Vite as a devDependency
-RUN yarn add vite --dev
+# Add vite as a devDependency to the specific workspace (replace apps/client with your workspace name)
+RUN yarn workspace apps/client add vite --dev
 
 # Copy the rest of the application code
 COPY . .
