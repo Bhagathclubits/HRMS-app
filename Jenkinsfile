@@ -18,10 +18,11 @@ pipeline {
                         // Extract the username from the credential
                         def githubUsername = env.GITHUB_USERNAME
                         
-                        // Login to Docker with the 'dockerPass' credential
+                        // Retrieve the Docker password securely
                         def dockerCreds = credentials('dockerPass')
+                        def dockerPassword = dockerCreds == null ? null : dockerCreds.getSecret()
 
-                        sh "docker login -u $githubUsername -p ${dockerCreds.getPassword()} docker.io"
+                        sh "docker login -u $githubUsername -p $dockerPassword docker.io"
                         sh "docker build -t $DOCKER_IMAGE_TAG ."
                     }
                 }
