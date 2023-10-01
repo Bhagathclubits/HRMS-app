@@ -14,12 +14,10 @@ pipeline {
             steps {
                 script {
                     // Use the 'Secret text' credential for GitHub
-                    def githubCredential = credentials('github')
+                    withCredentials([string(credentialsId: 'github', variable: 'GITHUB_CREDENTIALS')]) {
+                        // Login to Docker with the 'dockerPass' credential
+                        def dockerCreds = credentials('dockerPass')
 
-                    // Login to Docker with the 'dockerPass' credential
-                    def dockerCreds = credentials('dockerPass')
-
-                    withCredentials([string(credentialsId: githubCredential, variable: 'GITHUB_CREDENTIALS')]) {
                         sh "docker login -u ${dockerCreds.getUsername()} -p ${dockerCreds.getPassword()} docker.io"
                         sh "docker build -t $DOCKER_IMAGE_TAG ."
                     }
@@ -34,4 +32,3 @@ pipeline {
         }
     }
 }
-
