@@ -10,18 +10,12 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Use the 'Username with password' credential for GitHub
-                    withCredentials([usernamePassword(credentialsId: 'github', usernameVariable: 'GITHUB_USERNAME', passwordVariable: 'GITHUB_PASSWORD')]) {
-                        // Extract the username from the credential
-                        def githubUsername = env.GITHUB_USERNAME
+                    // Retrieve the Docker password securely
+                    def dockerPassword = credentials('DOCKER_PASSWORD')
 
-                        // Retrieve the Docker password securely
-                        def dockerPassword = sh(script: 'echo \$DOCKER_PASSWORD', returnStdout: true).trim()
-
-                        // Use 'docker login' with --password-stdin
-                        sh "echo -n $dockerPassword | docker login -u $githubUsername --password-stdin docker.io"
-                        sh "docker build -t myimage:latest ."
-                    }
+                    // Use 'docker login' with the -p flag
+                    sh "docker login -u dockadministrator -p ${dockerPassword} docker.io"
+                    sh "docker build -t myimage:latest ."
                 }
             }
         }
@@ -29,10 +23,9 @@ pipeline {
             steps {
                 script {
                     // Retrieve the Docker password securely
-                    def dockerPassword = sh(script: 'echo \$DOCKER_PASSWORD', returnStdout: true).trim()
+                    def dockerPassword = credentials('DOCKER_PASSWORD')
 
-                    // Use 'docker login' with --password-stdin
-                    sh "echo -n $dockerPassword | docker login -u dockadministrator --password-stdin docker.io"
+                    sh "docker login -u dockadministrator -p ${dockerPassword} docker.io"
                     sh "docker pull myimage:latest"
                     sh "docker run -d -p 3000:3000 --name mycont myimage:latest"
                 }
@@ -40,3 +33,4 @@ pipeline {
         }
     }
 }
+
