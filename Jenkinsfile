@@ -9,7 +9,7 @@ pipeline {
         }
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv(credentialsId: 'sonar') {
+                withSonarQubeEnv(installationName: 'sonar-pro', credentialsId: 'sonar') {
                     script {
                         // Your SonarQube analysis steps here
                     }
