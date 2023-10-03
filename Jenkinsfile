@@ -7,15 +7,28 @@ pipeline {
                 checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: []])
             }
         }
+
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv(installationName: 'sonar-pro', credentialsId: 'sonar') {
-                    script {
-                        // Your SonarQube analysis steps here
+                script {
+                    // Run SonarQube analysis using the 'Sonar' credentials
+                    withSonarQubeEnv(credentialsId: 'Sonar') {
+                        sh 'sonar-scanner' // Replace with your actual SonarQube analysis command
                     }
                 }
             }
         }
+
+        stage("Quality Gate") {
+            steps {
+                sleep(60)
+                timeout(time: 1, unit: 'HOURS') {
+                    // Wait for the quality gate to complete using the specified 'sonar' credentials
+                    waitForQualityGate(abortPipeline: true, credentialsId: 'sonar')
+                }
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 script {
@@ -28,6 +41,7 @@ pipeline {
                 }
             }
         }
+
         stage('Deploy to Docker Host') {
             steps {
                 script {
