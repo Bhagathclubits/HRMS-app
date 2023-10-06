@@ -1,29 +1,45 @@
-# Use an official Node.js runtime as the base image with your specified version
-FROM node:18.18.0
-
-# Set the working directory in the container
-WORKDIR /usr/src/app
-
-# Copy package.json and yarn.lock to the working directory
-COPY package.json* yarn.lock ./
-
-# Install app dependencies using yarn
-RUN yarn install
-
-# Copy the rest of the application code
+FROM node:18-alpine AS base
+ 
+FROM base AS builder
+RUN apk add --no-cache libc6-compat
+RUN apk update
+# Set working directory
+WORKDIR /app
+RUN yarn global add turbo
 COPY . .
-
-# Add Vite as a development dependency in your workspace named "client"
-RUN yarn workspace client add vite --dev
-
-# Build the server
-RUN yarn build:server
-
-# Run the TypeScript build (assuming this is a custom script in your package.json)
-RUN yarn build:ts
-
-# Expose a port if your app requires it
-EXPOSE 3000
-
-# Define the command to run your application
-CMD [ "yarn", "workspace", "server", "start" ]
+RUN turbo prune --scope=web --docker
+ 
+# Add lockfile and package.json's of isolated subworkspace
+FROM base AS installer
+RUN apk add --no-cache libc6-compat
+RUN apk update
+WORKDIR /app
+ 
+# First install the dependencies (as they change less often)
+COPY .gitignore .gitignore
+COPY --from=builder /app/out/json/ .
+COPY --from=builder /app/out/yarn.lock ./yarn.lock
+RUN yarn install
+ 
+# Build the project
+COPY --from=builder /app/out/full/ .
+RUN yarn turbo run build --filter=web...
+ 
+FROM base AS runner
+WORKDIR /app
+ 
+# Don't run production as root
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+USER nextjs
+ 
+COPY --from=installer /app/apps/web/next.config.js .
+COPY --from=installer /app/apps/web/package.json .
+ 
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
+COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
+COPY --from=installer --chown=nextjs:nodejs /app/apps/web/public ./apps/web/public
+ 
+CMD node apps/web/server.js
