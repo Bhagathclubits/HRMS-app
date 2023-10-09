@@ -20,6 +20,15 @@ RUN yarn global add vite
 # Copy the entire project directory into the container
 COPY . .
 
+# Navigate into the client directory
+WORKDIR /app/apps/client
+
+# Install client-specific dependencies
+RUN yarn install
+
+# Return to the main working directory
+WORKDIR /app
+
 # Build your server and client as per your script
 RUN yarn workspace client unsafe:build && \
     rm -r apis/server/public && \
@@ -28,7 +37,7 @@ RUN yarn workspace client unsafe:build && \
     yarn workspace server build:ts
 
 # Expose a port if your application listens on a specific port
-EXPOSE 3000
+# EXPOSE 8080
 
 # Start your server and run "turbo run dev"
 CMD ["yarn", "workspace", "server", "start", "&&", "yarn", "turbo", "run", "dev"]
