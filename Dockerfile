@@ -1,29 +1,30 @@
-# Use an official Node.js runtime as the base image with your specified version
+# Use a Node.js base image with the desired version
 FROM node:18.18.0
 
-# Set the working directory in the container
-WORKDIR /usr/src/app
+# Install yarn globally
+RUN npm install -g yarn
+
+# Set the working directory inside the container
+WORKDIR /app
 
 # Copy package.json and yarn.lock to the working directory
-COPY package.json* yarn.lock ./
+COPY package.json yarn.lock ./
 
-# Install app dependencies using yarn
-RUN yarn install
+# Install project dependencies
+RUN yarn install --frozen-lockfile
 
-# Copy the rest of the application code
+# Copy the entire project directory into the container
 COPY . .
 
-# Add Vite as a development dependency in your workspace named "client"
-RUN yarn workspace client add vite --dev
+# Build your server and client as per your script
+RUN yarn workspace client unsafe:build && \
+    rm -r apis/server/public && \
+    mkdir apis/server/public && \
+    cp -r apps/client/dist/ apis/server/public/ && \
+    yarn workspace server build:ts
 
-# Build the server
-RUN yarn build:server
+# Expose a port if your application listens on a specific port
+# EXPOSE 8080
 
-# Run the TypeScript build (assuming this is a custom script in your package.json)
-RUN yarn build:ts
-
-# Expose a port if your app requires it
-EXPOSE 3000
-
-# Define the command to run your application
-CMD [ "yarn", "workspace", "server", "start" ]
+# Start your server and run "turbo run dev"
+CMD ["yarn", "workspace", "server", "start", "&&", "yarn", "turbo", "run", "dev"]
