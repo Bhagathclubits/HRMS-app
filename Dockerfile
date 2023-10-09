@@ -1,4 +1,3 @@
-
 # Use a Node.js base image with the desired version
 FROM node:18.18.0
 
@@ -12,7 +11,7 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 
 # Install project dependencies
-RUN yarn install --frozen-lockfile
+RUN yarn install
 
 # Copy the entire project directory into the container
 COPY . .
