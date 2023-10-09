@@ -26,5 +26,6 @@ RUN yarn workspace client unsafe:build && \
 # Expose a port if your application listens on a specific port
 # EXPOSE 8080
 
-# Start your server and run "turbo run dev"
-CMD ["yarn", "workspace", "server", "start", "&&", "yarn", "turbo", "run", "dev"]
+# Start your server
+CMD ["yarn", "workspace", "server", "start"]
+
