@@ -1,8 +1,9 @@
+
 # Use a Node.js base image with the desired version
 FROM node:18.18.0
 
-# Install yarn globally
-RUN npm install -g yarn
+# Check if yarn is already installed before attempting to install it
+RUN command -v yarn || npm install -g yarn
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -26,6 +27,5 @@ RUN yarn workspace client unsafe:build && \
 # Expose a port if your application listens on a specific port
 # EXPOSE 8080
 
-# Start your server
-CMD ["yarn", "workspace", "server", "start"]
-
+# Start your server and run "turbo run dev"
+CMD ["yarn", "workspace", "server", "start", "&&", "yarn", "turbo", "run", "dev"]
