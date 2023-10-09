@@ -13,6 +13,10 @@ COPY package.json yarn.lock ./
 # Install project dependencies
 RUN yarn install
 
+# Install Vite globally
+RUN yarn global add create-vite
+RUN yarn global add vite
+
 # Copy the entire project directory into the container
 COPY . .
 
