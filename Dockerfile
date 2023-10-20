@@ -1,7 +1,10 @@
 # Use Node.js version 18.18.0 as a parent image
 FROM node:18.18.0
 
-# Install Yarn globally
+# Remove the existing Yarn binary
+RUN rm /usr/local/bin/yarn
+
+# Install Yarn globally using npm
 RUN npm install -g yarn
 
 # Set the working directory in the container
@@ -19,5 +22,5 @@ RUN yarn build:server
 # Expose a port
 EXPOSE 3000
 
-# Start the Node.js application
+# Define the command to start your Node.js application
 CMD ["yarn", "workspace", "server", "start"]
