@@ -1,11 +1,8 @@
 # Use Node.js version 18.18.0 as a parent image
 FROM node:18.18.0
 
-# Remove the existing Yarn binary
-RUN rm /usr/local/bin/yarn
-
-# Install Yarn globally using npm
-RUN npm install -g yarn
+# Install Yarn globally using npm, but with the --force flag to avoid conflicts
+RUN npm install -g --force yarn
 
 # Set the working directory in the container
 WORKDIR /app
